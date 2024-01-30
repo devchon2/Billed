@@ -6,6 +6,8 @@ import USERS_TEST from '../constants/usersTest.js'
 import Logout from "./Logout.js"
 
 export const filteredBills = (data, status) => {
+  console.log('datas:', data )
+  console.log('status:', status)
   return (data && data.length) ?
     data.filter(bill => {
       let selectCondition
@@ -188,4 +190,3 @@ export default class Dashboard {
     }
   }
 }
-console.log(document.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML))
