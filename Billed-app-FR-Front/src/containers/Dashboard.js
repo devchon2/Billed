@@ -110,7 +110,7 @@ export default class Dashboard {
     $('#btn-accept-bill').click((e) => this.handleAcceptSubmit(e, bill))
     $('#btn-refuse-bill').click((e) => this.handleRefuseSubmit(e, bill))
   }
-
+  
   handleAcceptSubmit = (e, bill) => {
     const newBill = {
       ...bill,
@@ -130,6 +130,7 @@ export default class Dashboard {
     this.updateBill(newBill)
     this.onNavigate(ROUTES_PATH['Dashboard'])
   }
+
 
   handleShowTickets(e, bills, index) {
     if (this.counter === undefined || this.index !== index) this.counter = 0
@@ -187,3 +188,4 @@ export default class Dashboard {
     }
   }
 }
+console.log(document.getAllByText(/^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/i).map(a => a.innerHTML))
