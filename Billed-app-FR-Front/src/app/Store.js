@@ -12,7 +12,6 @@ class Api {
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'GET'}))
   }
   async post({url, data, headers}) {
-    console.log(data)
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'POST', body: data}))
   }
   async delete({url, headers}) {
@@ -35,12 +34,10 @@ class ApiEntity {
   constructor({key, api}) {
     this.key = key;
     this.api = api;  
-    console.log("this.key:", this.key)
-console.log("this.api:", this.api)
+    
   }
 
   async select({selector, headers = {}}) {
-    console.log("<select selector:", selector)
     return await (this.api.get({url: `/${this.key}/${selector}`, headers: getHeaders(headers)}))
   }
   async list({headers = {}} = {}) {

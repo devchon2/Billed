@@ -1,56 +1,61 @@
-import VerticalLayout from './VerticalLayout.js'
-import ErrorPage from "./ErrorPage.js"
-import LoadingPage from "./LoadingPage.js"
-
-import Actions from './Actions.js'
+import VerticalLayout from "./VerticalLayout.js";
+import ErrorPage from "./ErrorPage.js";
+import LoadingPage from "./LoadingPage.js";
+import Actions from "./Actions.js";
+import {
+  formatDateForDisplay,
+  formatDateToSort,
+  
+} from "../app/format.js";
+import bills from "../fixtures/bills.js";
 
 const row = (bill) => {
-  return (`
+  return `
     <tr>
       <td>${bill.type}</td>
       <td>${bill.name}</td>
-      <td>${bill.date}</td>
+      <td data-testid='bill-date'>${formatDateForDisplay(bill.date)}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
         ${Actions(bill.fileUrl)}
       </td>
     </tr>
-    `)
-  }
+    `;
+};
 
 const rows = (data) => {
+  const sortedDatas = data && data.length > 0 ? data.sort((a, b) => formatDateToSort(b.date) - formatDateToSort(a.date)) : []
 
-  console.log(data)
-  return (data && data.length) ? data.map(bill => row(bill)).join("") : ""
+
+  return  sortedDatas.map(bill => row(bill)).join("")
 }
 
-export default ({ data: bills, loading, error }) => {
-  
-  const modal = () => (`
-    <div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Justificatif</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+
+export default function BillsUi(data, loading, error ){
+    
+  const modal = () => (`<div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"     aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Justificatif</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  `)
+      </div>`)
 
   if (loading) {
-    return LoadingPage()
+    return LoadingPage();
   } else if (error) {
-    return ErrorPage(error)
+    return ErrorPage(error);
   }
-  
-  return (`
+
+  return `
     <div class='layout'>
       ${VerticalLayout(120)}
       <div class='content'>
@@ -77,6 +82,6 @@ export default ({ data: bills, loading, error }) => {
         </div>
       </div>
       ${modal()}
-    </div>`
-  )
+    </div>
+  `;
 }

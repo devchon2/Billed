@@ -1,4 +1,4 @@
-import { formatDate } from '../app/format.js'
+import { formatDateForDisplay } from '../app/format.js'
 import DashboardFormUI from '../views/DashboardFormUI.js'
 import BigBilledIcon from '../assets/svg/big_billed.js'
 import { ROUTES_PATH } from '../constants/routes.js'
@@ -47,7 +47,7 @@ export const card = (bill) => {
         <span> ${bill.amount} € </span>
       </div>
       <div class='date-type-container'>
-        <span> ${formatDate(bill.date)} </span>
+        <span> ${formatDateForDisplay(bill.date)} </span>
         <span> ${bill.type} </span>
       </div>
     </div>
