@@ -4,7 +4,7 @@ import LoadingPage from "./LoadingPage.js";
 import Actions from "./Actions.js";
 import {
   formatDateForDisplay,
-  formatDateToSort,
+  sortBills,
   
 } from "../app/format.js";
 import bills from "../fixtures/bills.js";
@@ -25,7 +25,7 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
-  const sortedDatas = data && data.length > 0 ? data.sort((a, b) => formatDateToSort(b.date) - formatDateToSort(a.date)) : []
+  const sortedDatas = data && data.length > 0 ? sortBills(data) : []
 
 
   return  sortedDatas.map(bill => row(bill)).join("")

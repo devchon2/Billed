@@ -1,6 +1,5 @@
 export const formatDateForDisplay = (dateStr) => { // dateStr = "2021-01-01"  // dateStr = null
 
-
   const checkDate = () => { // dateStr = "2021-01-01"  // dateStr = null
     
     if (dateStr !== null) { // dateStr = "2021-01-01"
@@ -37,7 +36,7 @@ export const formatDateToSort = (dateStr) => {
   return digitalizedDate
 }
 
-
+export const sortBills = (data) => data.sort((a, b) => formatDateToSort(b.date) - formatDateToSort(a.date))
  
 export const formatStatus = (status) => {
   switch (status) {

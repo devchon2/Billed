@@ -24,7 +24,6 @@ export default class NewBill {
     console.log('filepath',filePath)
     const fileName = filePath[filePath.length-1]
     console.log('filepath',fileName)
-    debugger
     const formData = new FormData()
     const email = JSON.parse(localStorage.getItem("user")).email
     formData.append('file', file)
