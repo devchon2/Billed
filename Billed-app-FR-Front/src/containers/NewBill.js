@@ -8,26 +8,24 @@ export default class NewBill {
     this.store = store
     const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
     formNewBill.addEventListener("submit", this.handleSubmit)
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    file.addEventListener("change", this.handleChangeFile)
-    this.fileUrl = null
-    this.fileName = null
+    this.fileInput = this.document.querySelector(`input[data-testid="file"]`)
+    this.fileInput.addEventListener("change", this.handleChangeFile)
+    this.Email = JSON.parse(localStorage.getItem("user")).email
+
     this.billId = null
     new Logout({ document, localStorage, onNavigate })
+
+
   }
-  handleChangeFile = e => {
+  handleChangeFile = (e) => {
+    
     e.preventDefault()
     debugger
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    console.log('filepath',file)
-    const filePath = e.target.value.replaceAll('\\','\/')
-    console.log('filepath',filePath)
-    const fileName = filePath[filePath.length-1]
-    console.log('filepath',fileName)
-    const formData = new FormData()
-    const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
-    formData.append('email', email)
+    
+    this.file = this.fileInput.files[0]
+    this.fileUrl = this.file.filePath
+    this.fileName = this.file.name
+    const formData = new FormData(this.fileInput, this.file )
 
     this.store
       .bills()
@@ -44,7 +42,11 @@ export default class NewBill {
         this.fileName = fileName
       }).catch(error => console.error(error))
   }
+
+
+
   handleSubmit = e => {
+    debugger
     e.preventDefault()
     console.log(e.target.querySelector(`input[data-testid="datepicker"]`).value)
     const email = JSON.parse(localStorage.getItem("user")).email
@@ -67,6 +69,7 @@ export default class NewBill {
 
   // not need to cover this function by tests
   updateBill = (bill) => {
+    debugger
     if (this.store) {
       this.store
       .bills()
