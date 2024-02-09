@@ -20,16 +20,25 @@ export default class Bills{ // Classe Manquante?
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
+  
+  
+
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
     $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
     $('#modaleFile').modal('show')
   }
+  handleClickIconDownload = (icon) => {
+    const billUrl = icon.getAttribute("data-bill-url")
+    //télécharger le justificatif
 
-  getBills = () => {
+
+  }
+
+  getBills = async () => {
     if (this.store) {
-      return this.store
+      return await this.store
       .bills()
       .list()
       .then(snapshot => {
@@ -39,8 +48,6 @@ export default class Bills{ // Classe Manquante?
             try {
               return {
                 ...bill,
-
-                
                 date: bill.date,
                 status: formatStatus(bill.status)
               }

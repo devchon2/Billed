@@ -6,8 +6,8 @@ export default class NewBill {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
-    formNewBill.addEventListener("submit", this.handleSubmit)
+    this.formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
+    this.formNewBill.addEventListener("submit", this.handleSubmit)
     this.fileInput = this.document.querySelector(`input[data-testid="file"]`)
     this.fileInput.addEventListener("change", this.handleChangeFile)
     this.Email = JSON.parse(localStorage.getItem("user")).email
@@ -23,14 +23,15 @@ export default class NewBill {
     debugger
     
     this.file = this.fileInput.files[0]
+    console.log(this.file)
     this.fileUrl = this.file.filePath
     this.fileName = this.file.name
-    const formData = new FormData(this.fileInput, this.file )
+    const formData = new FormData(this.formData )
 
     this.store
       .bills()
       .create({
-        data: formData,
+        data: formData(),
         headers: {
           noContentType: true
         }
