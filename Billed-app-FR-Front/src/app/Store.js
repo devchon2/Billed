@@ -1,6 +1,3 @@
-import mockedBills from '../__mocks__/mockedBills.js'
-
-
 
 const jsonOrThrowIfError = async (response) => {
   if(!response.ok) throw new Error((await response.json()).message)
@@ -36,10 +33,8 @@ const getHeaders = (headers) => {
 class ApiEntity {
   constructor({key, api}) {
     this.key = key;
-    this.api = api;  
-    
+    this.api = api;
   }
-
   async select({selector, headers = {}}) {
     return await (this.api.get({url: `/${this.key}/${selector}`, headers: getHeaders(headers)}))
   }
@@ -50,8 +45,6 @@ class ApiEntity {
     return await (this.api.patch({url: `/${this.key}/${selector}`, headers: getHeaders(headers), data}))
   }
   async create({data, headers = {}}) {
-    debugger
-
     return await (this.api.post({url: `/${this.key}`, headers: getHeaders(headers), data}))
   }
   async delete({selector, headers = {}}) {
@@ -73,8 +66,7 @@ class Store {
   ref = (path) => this.store.doc(path)
 
   bill = bid => (new ApiEntity({key: 'bills', api: this.api})).select({selector: bid})
-  // bills = () => mockedBills.bills()
-  bills = () => (new ApiEntity({key: 'bills', api: this.api}))
+  bills = () => new ApiEntity({key: 'bills', api: this.api})
 }
 
 export default new Store()

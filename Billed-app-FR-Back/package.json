@@ -17,7 +17,6 @@
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.3",
-    "nvm": "^0.0.4",
     "sequelize": "^6.9.0",
     "short-uuid": "^4.2.0",
     "sqlite3": "^5.0.2"

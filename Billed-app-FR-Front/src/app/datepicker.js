@@ -20,7 +20,6 @@ Date.prototype.getWeekNumber = function () {
     return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 };
 
-
 // DATEPICKER
 class Datepicker {
     constructor(host, s) {
@@ -32,7 +31,8 @@ class Datepicker {
         
         
         
-        if (s) t.config(s); //
+        // Run config if settings present
+        if (s) t.config(s); 
         
         // Show conditions
         window.onresize = () => { if (t.display_state) show(true); }; // to update screen position
@@ -230,11 +230,7 @@ class Datepicker {
         };
     }
     
-    /**
-     * Configure the datepicker with the provided settings.
-     * @param {Object} s - The settings object.
-     */
-    config(s) { // 
+    config(s) {
         this.firstdate = s.firstdate || this.firstdate;
         this.lastdate = s.lastdate || this.lastdate;
         this.disableddays = s.disableddays || this.disableddays || (() => { return true; });

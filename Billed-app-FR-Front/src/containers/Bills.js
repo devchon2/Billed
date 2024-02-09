@@ -1,8 +1,8 @@
 import { ROUTES_PATH } from '../constants/routes.js'
-import { formatStatus } from "../app/format.js"
+import { formatDateForDisplay, formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
-export default class Bills{ // Classe Manquante?
+export default class {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
     this.onNavigate = onNavigate
@@ -20,35 +20,25 @@ export default class Bills{ // Classe Manquante?
     this.onNavigate(ROUTES_PATH['NewBill'])
   }
 
-  
-  
-
   handleClickIconEye = (icon) => {
     const billUrl = icon.getAttribute("data-bill-url")
     const imgWidth = Math.floor($('#modaleFile').width() * 0.5)
     $('#modaleFile').find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${imgWidth} src=${billUrl} alt="Bill" /></div>`)
     $('#modaleFile').modal('show')
   }
-  handleClickIconDownload = (icon) => {
-    const billUrl = icon.getAttribute("data-bill-url")
-    //télécharger le justificatif
 
-
-  }
-
-  getBills = async () => {
+  getBills = () => {
     if (this.store) {
-      return await this.store
+      return this.store
       .bills()
       .list()
       .then(snapshot => {
-
         const bills = snapshot
-          .map(bill => { 
+          .map(bill => {
             try {
               return {
                 ...bill,
-                date: bill.date,
+                date: formatDateForDisplay(bill.date),
                 status: formatStatus(bill.status)
               }
             } catch(e) {
@@ -62,7 +52,7 @@ export default class Bills{ // Classe Manquante?
               }
             }
           })
-
+          console.log('length', bills.length)
         return bills
       })
     }

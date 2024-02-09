@@ -4,7 +4,7 @@
 
 import { screen } from "@testing-library/dom"
 import DashboardFormUI from "../views/DashboardFormUI.js"
-import { formatDate } from "../app/format.js"
+import { formatDateForDisplay } from "../app/format.js"
 
 const bill = {
   "id": "47qAXb6fIm2zOKkLzMro",
@@ -42,12 +42,13 @@ describe('Given I am connected as an Admin and I am on Dashboard Page', () => {
     test(('Then, it should them in the page'), () => {
       const html = DashboardFormUI(bill)
       document.body.innerHTML = html
+      {console.log(formatDateForDisplay(bill.date))}
       expect(screen.getByText(bill.vat)).toBeTruthy()
       expect(screen.getByText(bill.type)).toBeTruthy()
       expect(screen.getByText(bill.commentary)).toBeTruthy()
       expect(screen.getByText(bill.name)).toBeTruthy()
       expect(screen.getByText(bill.fileName)).toBeTruthy()
-      expect(screen.getByText(formatDate(bill.date))).toBeTruthy()
+      expect(screen.getByText(formatDateForDisplay(bill.date))).toBeTruthy()
       expect(screen.getByText(bill.amount.toString())).toBeTruthy()
       expect(screen.getByText(bill.pct.toString())).toBeTruthy()
     })
