@@ -9,7 +9,6 @@ import {
 } from "../app/format.js";
 
 const row = (bill) => {
-  console.log('BILL.FILEURL', bill.fileUrl)
   return `
     <tr>
       <td>${bill.type}</td>
@@ -26,9 +25,7 @@ const row = (bill) => {
 
 const rows = (data) => {
 debugger
-  console.log('data',data)
   const sortedDatas = data && data.length > 0 ? sortBills(data) : []
-  console.log('sortedDatas', sortedDatas)
   return sortedDatas.map(bill => row(bill)).join("")
 }
 
@@ -38,7 +35,6 @@ export default function BillsUi(data, loading, error) {
   const rawDatas = data.data
 
 
-console.log('rawData', rawDatas)
   const modal = () => (`<div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"     aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div class="modal-content">

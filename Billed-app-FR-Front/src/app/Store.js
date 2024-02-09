@@ -73,8 +73,8 @@ class Store {
   ref = (path) => this.store.doc(path)
 
   bill = bid => (new ApiEntity({key: 'bills', api: this.api})).select({selector: bid})
-  bills = () => mockedBills.bills()
-  // bills = () => (new ApiEntity({key: 'bills', api: this.api})
+  // bills = () => mockedBills.bills()
+  bills = () => (new ApiEntity({key: 'bills', api: this.api}))
 }
 
 export default new Store()
