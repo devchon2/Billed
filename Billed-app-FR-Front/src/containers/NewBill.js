@@ -6,29 +6,45 @@ export default class NewBill {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
-    const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
-    formNewBill.addEventListener("submit", this.handleSubmit)
-    const file = this.document.querySelector(`input[data-testid="file"]`)
-    file.addEventListener("change", this.handleChangeFile)
-    this.fileUrl = null
-    this.fileName = null
+    this.formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
+    this.formNewBill.addEventListener("submit", this.handleSubmit)
+    this.fileInput = this.document.querySelector(`input[data-testid="file"]`)
+    this.fileInput.addEventListener("change", this.handleChangeFile)
+    this.path = null
+    this.originalename = null
     this.billId = null
+    this.grantedMimeType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+    this.mimeType = null
+    this.email = JSON.parse(localStorage.getItem("user")).email
+    this.formData = new FormData()
     new Logout({ document, localStorage, onNavigate })
   }
   handleChangeFile = e => {
     e.preventDefault()
-    const file = this.document.querySelector(`input[data-testid="file"]`).files[0]
-    const filePath = e.target.value.split(/\\/g)
-    const fileName = filePath[filePath.length-1]
-    const formData = new FormData()
-    const email = JSON.parse(localStorage.getItem("user")).email
-    formData.append('file', file)
-    formData.append('email', email)
+    this.file = this.fileInput.files[0]
+    this.mimeType = this.file.type
+    
+    //Reject if Wrong mimeType
+    if (!this.grantedMimeType.includes(this.mimeType)) {
+      this.fileInput.value = null
+      return
+    } 
+    
+    this.originalename = this.file.name
+    this.path = '/public/' + this.originalename
+    
+    this.formData = new FormData(this.formNewBill)
+    
+    for (const pair of this.formData.entries()) {
+      console.log(pair[0] + ', ' + pair[1])
+    }
+
+    
 
     this.store
       .bills()
       .create({
-        data: formData,
+        data: this.formData,
         headers: {
           noContentType: true
         }
@@ -36,8 +52,9 @@ export default class NewBill {
       .then(({fileUrl, key}) => {
         console.log(fileUrl)
         this.billId = key
-        this.fileUrl = fileUrl
-        this.fileName = fileName
+        this.path = fileUrl
+        console.log('this.path', this.path)
+        console.log('this.billId', this.billId)
       }).catch(error => console.error(error))
   }
   handleSubmit = e => {
