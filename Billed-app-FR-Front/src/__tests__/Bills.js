@@ -34,12 +34,8 @@ describe("Given I am connected as an employee", () => {
             
       const dateRegex = /^([0-2][0-9]|[3][0-1])\s(Janv|Févr|Mars|Avr|Mai|Juin|Juil|Août|Sept|Oct|Nov|Déc)\.\s(19|20)\d\d$/
       const dates = screen.getAllByTestId('bill-date').map(a => a.innerHTML)
-          
-
-      {console.log('""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""',dates,'####################################################################################################################################################################################################################################################DATEREGEX',dateRegex)}
-      
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
-      const datesSorted = [...dates].sort(antiChrono)
+      const datesSorted = dates.sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
   })
