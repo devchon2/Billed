@@ -6,19 +6,37 @@ export default class NewBill {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+
+    // Catch form new bill
     this.formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`)
     this.formNewBill.addEventListener("submit", this.handleSubmit)
+
+    // Catch file input
     this.fileInput = this.document.querySelector(`input[data-testid="file"]`)
     this.fileInput.addEventListener("change", this.handleChangeFile)
-    this.path = null
-    this.originalename = null
+
+    // Init file properties
+    this.file = null
+    this.filePath = null
+    this.fileName = null
     this.billId = null
     this.grantedMimeType = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
     this.mimeType = null
+
+
+    // innit user email
     this.email = JSON.parse(localStorage.getItem("user")).email
+
+    // Init FormData
     this.formData = new FormData()
+
+
+    // Logout
     new Logout({ document, localStorage, onNavigate })
   }
+
+
+
   handleChangeFile = e => {
     e.preventDefault()
     this.file = this.fileInput.files[0]
@@ -30,10 +48,13 @@ export default class NewBill {
       return
     } 
     
-    this.originalename = this.file.name
-    this.path = '/public/' + this.originalename
+    this.fileName = this.file.name
+    this.path = '/public/'
     
-    this.formData = new FormData(this.formNewBill)
+    this.formData.append(
+      'file', this.file, this.fileName )
+      this.formData.append('user', this.email)
+
     
     for (const pair of this.formData.entries()) {
       console.log(pair[0] + ', ' + pair[1])
@@ -52,8 +73,9 @@ export default class NewBill {
       .then(({fileUrl, key}) => {
         console.log(fileUrl)
         this.billId = key
-        this.path = fileUrl
-        console.log('this.path', this.path)
+        console.log('this.billId', this.billId)
+        this.filePath = fileUrl
+        console.log('this.path', this.filePath)
         console.log('this.billId', this.billId)
       }).catch(error => console.error(error))
   }
@@ -70,7 +92,7 @@ export default class NewBill {
       vat: e.target.querySelector(`input[data-testid="vat"]`).value,
       pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
       commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
-      fileUrl: this.fileUrl,
+      fileUrl: this.path,
       fileName: this.fileName,
       status: 'pending'
     }

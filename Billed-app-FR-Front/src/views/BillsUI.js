@@ -16,7 +16,7 @@ const row = (bill) => {
       <td data-testid='bill-date'>${formatDateForDisplay(bill.date)}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
-      <td>
+      <td >
         ${Actions(bill.fileUrl)}
       </td>
     </tr>
@@ -24,7 +24,7 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
-debugger
+
   const sortedDatas = data && data.length > 0 ? sortBills(data) : []
   return sortedDatas.map(bill => row(bill)).join("")
 }

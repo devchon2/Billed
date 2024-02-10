@@ -1,3 +1,4 @@
+import mokedData from '../__mocks__/store.js'
 
 const jsonOrThrowIfError = async (response) => {
   if(!response.ok) throw new Error((await response.json()).message)
@@ -31,6 +32,7 @@ const getHeaders = (headers) => {
 }
 
 class ApiEntity {
+  
   constructor({key, api}) {
     this.key = key;
     this.api = api;
@@ -42,9 +44,17 @@ class ApiEntity {
     return await (this.api.get({url: `/${this.key}`, headers: getHeaders(headers)}))
   }
   async update({data, selector, headers = {}}) {
+    for (const[key,value] of data.entries()) {
+      console.log('key:', key, 'value:', value)
+    };
+    console.log('API UPDATE:', data, selector, headers)
     return await (this.api.patch({url: `/${this.key}/${selector}`, headers: getHeaders(headers), data}))
   }
   async create({data, headers = {}}) {
+    for (const[key,value] of data.entries()) {
+      console.log('key:', key, 'value:', ...value)
+    };
+    console.log('API CREATE:', data, headers)
     return await (this.api.post({url: `/${this.key}`, headers: getHeaders(headers), data}))
   }
   async delete({selector, headers = {}}) {
@@ -66,7 +76,8 @@ class Store {
   ref = (path) => this.store.doc(path)
 
   bill = bid => (new ApiEntity({key: 'bills', api: this.api})).select({selector: bid})
-  bills = () => new ApiEntity({key: 'bills', api: this.api})
+  bills = () => (new ApiEntity({key: 'bills', api: this.api}))
+  // bills = () => (mokedData.bills())
 }
 
 export default new Store()
