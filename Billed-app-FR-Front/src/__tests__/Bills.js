@@ -9,6 +9,7 @@ import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
 import router from "../app/Router.js";
+import { formatDateToSort } from "../app/format.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -27,16 +28,28 @@ describe("Given I am connected as an employee", () => {
       const windowIcon = screen.getByTestId('icon-window')
       expect(windowIcon.classList.contains("active-icon")).toEqual(true)
 
-    })
+    }),
     test("Then bills should be ordered from earliest to latest", () => {
 
       document.body.innerHTML = BillsUI({ data: bills })
             
-      const dateRegex = /^([0-2][0-9]|[3][0-1])\s(Janv|Févr|Mars|Avr|Mai|Juin|Juil|Août|Sept|Oct|Nov|Déc)\.\s(19|20)\d\d$/
-      const dates = screen.getAllByTestId('bill-date').map(a => a.innerHTML)
+      const dates = screen.getAllByTestId('bill-date').map(a => a.innerHTML ? a.innerHTML : '')
+      {console.log('dates', dates )}
       const antiChrono = (a, b) => ((a < b) ? 1 : -1)
       const datesSorted = dates.sort(antiChrono)
       expect(dates).toEqual(datesSorted)
     })
+    test("then bills should be displayed in the page toLocalDateString format", () => {
+      document.body.innerHTML = BillsUI({ data: bills })
+      const dates = screen.getAllByTestId('bill-date').map(a => a.innerHTML ? a.innerHTML : '')
+      const dateRegex = /^([0-2][0-9]|[3][0-1])\s(Janv|Févr|Mars|Avr|Mai|Juin|Juil|Août|Sept|Oct|Nov|Déc)\.?\s(19|20)\d\d$/
+      dates.forEach(date => {
+        console.log(date)
+        expect(dateRegex.test(date)).toEqual
+      }
+      )
+    }
+    )
   })
-})
+}
+)
