@@ -17,9 +17,8 @@ export default class Bills {
     if (iconDownload) iconDownload.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconDownload())
     })
-    new Logout({ document: this.document , localStorage, onNavigate })
+    new Logout({ document: this.document, localStorage: this.localStorage, onNavigate: this.onNavigate })
   }
-  debugger
 
   handleClickNewBill = () => {
     this.onNavigate(ROUTES_PATH['NewBill'])
@@ -43,16 +42,19 @@ export default class Bills {
   getBills = () => {
     debugger
     if (this.store) {
+      debugger
       return this.store
       .bills()
       .list()
       .then(snapshot => {
+        debugger
         const bills = snapshot
           .map(bill => {
+            debugger
             try {
               return {
                 ...bill,
-                date: formatDateForDisplay(bill.date),
+                date: bill.date,
                 status: formatStatus(bill.status)
               }
             } catch(e) {
@@ -61,7 +63,7 @@ export default class Bills {
               console.log(e,'for',bill)
               return {
                 ...bill,
-                date: formatDateForDisplay(bill.date),
+                date: bill.date,
                 status: formatStatus(bill.status)
               }
             }

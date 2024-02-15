@@ -1,5 +1,5 @@
 export const formatDateForDisplay = (dateStr) => { // dateStr = "2021-01-01"  // dateStr = null
-
+  console.log('dateStr', dateStr)
   const checkDate = () => { // dateStr = "2021-01-01"  // dateStr = null
     
     if (dateStr !== null) { // dateStr = "2021-01-01"
@@ -27,13 +27,50 @@ export const formatDateForDisplay = (dateStr) => { // dateStr = "2021-01-01"  //
 }
 
 export const formatDateToSort = (dateStr) => {
-  const date = new Date(dateStr)
-  const ye = new Intl.DateTimeFormat('fr', { year: 'numeric' }).format(date)
-  const mo = new Intl.DateTimeFormat('fr', { month: '2-digit' }).format(date)
-  const da = new Intl.DateTimeFormat('fr', { day: '2-digit' }).format(date)
+  console.log('dateStr', formatDateToStore(dateStr))
+  const date = new Date(formatDateToStore(dateStr))
+  console.log('date', date)
+  const ye = new Intl.DateTimeFormat('us', { year: 'numeric' }).format(date)
+  const mo = new Intl.DateTimeFormat('us', { month: '2-digit' }).format(date)
+  const da = new Intl.DateTimeFormat('us', { day: '2-digit' }).format(date)
+
+  console.log('ye', ye)
+  console.log('mo', mo)
+  console.log('da', da)
+
+
   const digitalizedDate = Number(`${ye}${mo}${da}`)
 
   return digitalizedDate
+}
+
+export const formatDateToStore = (dateStr) => {
+  debugger
+  const checkDate = () => { 
+    
+    if (dateStr === null) { // dateStr = "2021-01-01"
+      
+      return  
+    } 
+    
+    return new Date(dateStr)
+  }
+
+  const date = checkDate()
+    .toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    })
+  
+  const splittedDate = date.split('/')
+  const da = splittedDate[0].padStart(2, '0')
+  const mo = splittedDate[1].padStart(2, '0')
+  const ye = splittedDate[2].padStart(4, '0')
+
+  
+  
+  return `${ye}-${mo}-${da}`
 }
 
 export const sortBills = (data) => data.sort((a, b) => formatDateToSort(b.date) - formatDateToSort(a.date))

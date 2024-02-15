@@ -1,3 +1,4 @@
+import { formatDateToStore } from '../app/format.js'
 import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
 
@@ -25,15 +26,12 @@ export default class NewBill {
       this.checkInputs([ this.formNewBill.querySelector(`select[data-testid="expense-type"]`), this.formNewBill.querySelector(`input[data-testid="expense-name"]`), this.formNewBill.querySelector(`input[data-testid="amount"]`), this.formNewBill.querySelector(`input[data-testid="datepicker"]`), this.formNewBill.querySelector(`input[data-testid="vat"]`), this.formNewBill.querySelector(`input[data-testid="pct"]`), this.formNewBill.querySelector(`textarea[data-testid="commentary"]`)])
     })
   }
-
+debugger
 
   
   checkInputs = (arrayFromFormElements) => {
     const enableValidate = arrayFromFormElements.every(e => e.value !== '' && e.value !== null)
-    console.log('enableValidate', enableValidate)
-    
       this.fileButton.disabled = !enableValidate
-      console.log('this.file.Button', this.fileButton.disabled)
       if (this.fileButton.files[0] !== undefined) {
         this.submitButton.disabled = !enableValidate
       }
@@ -66,14 +64,15 @@ export default class NewBill {
             this.formNewBill.querySelector(`input[data-testid="expense-name"]`).value : 
                   expanseType
     const amount = parseInt(this.formNewBill.querySelector(`input[data-testid="amount"]`).value) || 0
-    const date = this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value
+    const date = formatDateToStore(this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value)
     const vat = this.formNewBill.querySelector(`input[data-testid="vat"]`).value.toString() || 0
     const pct = parseInt(this.formNewBill.querySelector(`input[data-testid="pct"]`).value) || 20
     const commentary = this.formNewBill.querySelector(`textarea[data-testid="commentary"]`).value
 
 
     const formData = new FormData()
-    const email = JSON.parse(localStorage.getItem("user")).email
+    const user =JSON.parse(localStorage.getItem("user"))
+    const email = user.email
     formData.append('file',this.file,this.fileName)
     formData.append('filePath', this.path + this.fileName)
     formData.append('email', email),
@@ -106,6 +105,7 @@ export default class NewBill {
       .bills()
       .create({
         data: formData,
+        user: JSON.stringify({user}),
         headers: {
           noContentType:true
         }
@@ -119,30 +119,29 @@ export default class NewBill {
   handleSubmit = e => {
     e.preventDefault()
     const user = JSON.parse(localStorage.getItem("user"))
-    const email = user.email
     const formData = new FormData()
-    formData.append('email', email)
-    const bill = {
+    formData.append('user', JSON.stringify(user))
 
-      email: email,
+    const bill = {
       id: this.billId,
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
-      name:  e.target.querySelector(`input[data-testid="expense-name"]`).value,
+      name: e.target.querySelector(`input[data-testid="expense-name"]`).value,
       amount: parseInt(e.target.querySelector(`input[data-testid="amount"]`).value),
-      date:  e.target.querySelector(`input[data-testid="datepicker"]`).value,
+      date: formatDateToStore(e.target.querySelector(`input[data-testid="datepicker"]`).value),
       vat: e.target.querySelector(`input[data-testid="vat"]`).value.toString() || 0,
       pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
       commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
-      path: this.path  + this.fileName,
+      filePath: this.filePath,
       fileName: this.fileName,
       status: 'pending'
-    }
-    formData.append('data', JSON.stringify(bill))
-    formData.append('user', JSON.stringify(user))
+    };
+    console.log('bill', bill);
     
+    formData.append('file', this.file)
+    formData.append('bill', JSON.stringify(bill))
 
-    this.updateBill(formData)
-    this.onNavigate(ROUTES_PATH['Bills'])
+    this.updateBill(bill)
+      this.onNavigate(ROUTES_PATH['Bills'])
   }
 
   // not need to cover this function by tests
@@ -150,13 +149,11 @@ export default class NewBill {
     if (this.store) {
       this.store
       .bills()
-      .update({data: bill,headers:{
+      .update({data: JSON.stringify(bill),headers:{
         noContentType:true,
         
-      },params: {id: bill.billId}, selector: bill.billId})
-      .then(() => {
-        this.onNavigate(ROUTES_PATH['Bills'])
-      })
+      },params: {id: this.billId}, selector: this.billId})
+      
       .catch(error => console.error(error))
     }
   }
