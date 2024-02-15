@@ -55,14 +55,14 @@ export default () => {
                   </div>
                   <div class="col-half">
                     <label for="file" class="bold-label">Justificatif</label>
-                    <input id='file' accept='.jpeg, .jpg, .png, .gif' required type="file" class="form-control blue-border" data-testid="file" />
+                    <input disabled id='file' accept='.jpeg, .jpg, .png, .gif' required type="file" class="form-control blue-border" data-testid="file" />
                   </div>
                 </div>
             </div>
             <div class="row">
               <div class="col-md-6">
                 <div class="col-half">
-                  <button type="submit" id='btn-send-bill' class="btn btn-primary">Envoyer</button>
+                  <button disabled type="submit" id='btn-send-bill' class="btn btn-primary">Envoyer</button>
                 </div>
               </div>
             </div>

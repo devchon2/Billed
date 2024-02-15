@@ -31,7 +31,7 @@ const rows = (data) => {
 
 
 export default function BillsUi(data, loading, error) {
-
+  console.log('data', data.data)
   const rawDatas = data.data
 
 

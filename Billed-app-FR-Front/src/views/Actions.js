@@ -9,7 +9,7 @@ export default (billUrl) => {
       </div>
     </div>
     <div class="icon-actions">
-      <a href=${billUrl} id="download" data-testid="icon-download" data-bill-url=${billUrl}>
+      <a href=${billUrl} id="download" download='Justificatif.pdf'  data-testid="icon-download" data-bill-url=${billUrl}>
       ${downloadBlueIcon}
       </a>
     </div>`

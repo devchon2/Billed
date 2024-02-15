@@ -22,7 +22,6 @@ export const modal = () => (`
   `)
 
 export default (bill) => {
-  console.log(formatDateForDisplay(bill.date))
   return (`
     <div class="container dashboard-form" data-testid="dashboard-form">
       <div class="row">

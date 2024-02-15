@@ -68,6 +68,7 @@ export const getStatus = (index) => {
 }
 
 export default class {
+  
   constructor({ document, onNavigate, store, bills, localStorage }) {
     this.document = document
     this.onNavigate = onNavigate
@@ -86,6 +87,8 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
+    // debugger
+
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
     if (this.counter % 2 === 0) {
@@ -131,7 +134,8 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    if (this.counter === undefined || this.index !== index) this.counter = 0
+// debugger
+    if (this.counter === undefined || this.index !== index) this.counter = 0 // default value
     if (this.index === undefined || this.index !== index) this.index = index
     if (this.counter % 2 === 0) {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(0deg)'})

@@ -19,6 +19,7 @@ export default class Bills {
     })
     new Logout({ document: this.document , localStorage, onNavigate })
   }
+  debugger
 
   handleClickNewBill = () => {
     this.onNavigate(ROUTES_PATH['NewBill'])
@@ -40,6 +41,7 @@ export default class Bills {
   }
 
   getBills = () => {
+    debugger
     if (this.store) {
       return this.store
       .bills()
@@ -59,7 +61,7 @@ export default class Bills {
               console.log(e,'for',bill)
               return {
                 ...bill,
-                date: bill.date,
+                date: formatDateForDisplay(bill.date),
                 status: formatStatus(bill.status)
               }
             }

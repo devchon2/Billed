@@ -1,4 +1,3 @@
-import mockedData from '../__mocks__/store.js'
 
 const jsonOrThrowIfError = async (response) => {
   if(!response.ok) throw new Error((await response.json()).message)
@@ -13,9 +12,7 @@ class Api {
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'GET'}))
   }
   async post({url, data, headers}) {
-
-    console.log('DATAS IN POST RETURN',jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'POST',params: {id:data.id}, body: data})))
-    return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'POST',params: {id:data.id}, body: data}))
+    return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'POST', body: data}))
   }
   async delete({url, headers}) {
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'DELETE'}))
@@ -34,7 +31,6 @@ const getHeaders = (headers) => {
 }
 
 class ApiEntity {
-  
   constructor({key, api}) {
     this.key = key;
     this.api = api;
@@ -46,15 +42,9 @@ class ApiEntity {
     return await (this.api.get({url: `/${this.key}`, headers: getHeaders(headers)}))
   }
   async update({data, selector, headers = {}}) {
-    debugger
-    console.log('API UPDATE:', data, selector, headers)
-    console.log('API UPDATE RETURN',await (this.api.patch({url: `/${this.key}/${selector}`, headers: getHeaders(headers), data})))
     return await (this.api.patch({url: `/${this.key}/${selector}`, headers: getHeaders(headers), data}))
   }
   async create({data, headers = {}}) {
-    debugger
-    console.log('API CREATE:', data, headers)
-    console.log('API CREATE RETURN',await (this.api.post({url: `/${this.key}`, headers: getHeaders(headers), data})))
     return await (this.api.post({url: `/${this.key}`, headers: getHeaders(headers), data}))
   }
   async delete({selector, headers = {}}) {
@@ -76,8 +66,7 @@ class Store {
   ref = (path) => this.store.doc(path)
 
   bill = bid => (new ApiEntity({key: 'bills', api: this.api})).select({selector: bid})
-  // bills = () => (new ApiEntity({key: 'bills', api: this.api}))
-  bills = () => mockedData.bills();  
+  bills = () => new ApiEntity({key: 'bills', api: this.api})
 }
 
 export default new Store()
