@@ -95,8 +95,8 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
-    // debugger
-
+    this.counter = 0; //reinitialize counter for each ticket
+    this.id = undefined;
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
     if (this.counter % 2 === 0) {
@@ -142,7 +142,9 @@ export default class {
   };
 
   handleShowTickets(e, bills, index) {
-    // debugger
+    debugger
+    e.stopPropagation()
+    
     if (this.counter === undefined || this.index !== index) this.counter = 0; // default value
     if (this.index === undefined || this.index !== index) this.index = index;
     if (this.counter % 2 === 0) {
