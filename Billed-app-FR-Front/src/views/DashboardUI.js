@@ -14,9 +14,9 @@ export default ({ data, loading, error }) => {
   }
 
   return (`
-    <div class='layout'>
+    <div class='layout '>
       ${VerticalLayout(120)}
-      <div class='dashboard-content'>
+      <div class='dashboard-content' data-testid='dashboard-content'>
         <div class='bills-feed'>
           <div class='status-bills-header'>
             <h3> En attente (${filteredBills(data && data.bills, "pending").length}) </h3>
