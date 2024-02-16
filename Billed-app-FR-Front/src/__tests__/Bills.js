@@ -9,7 +9,7 @@ import { ROUTES_PATH} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
 import router from "../app/Router.js";
-import { formatDateToSort } from "../app/format.js";
+import { formatDateForDisplay, formatDateToSort } from "../app/format.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -45,7 +45,7 @@ describe("Given I am connected as an employee", () => {
       const dateRegex = /^([0-2][0-9]|[3][0-1])\s(Janv|Févr|Mars|Avr|Mai|Juin|Juil|Août|Sept|Oct|Nov|Déc)\.?\s(19|20)\d\d$/
       dates.forEach(date => {
         console.log(date)
-        expect(dateRegex.test(date)).toEqual
+        expect(dateRegex.test(date)).toBe(true)
       }
       )
     }

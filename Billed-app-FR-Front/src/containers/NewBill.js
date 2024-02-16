@@ -59,6 +59,7 @@ export default class NewBill {
     e.preventDefault();
     this.file = this.fileInput.files[0];
     this.mimetype = this.file.type;
+    this.fileName = this.file.name;
   
     if (!this.grantedMimeType.includes(this.mimetype)) {
       this.fileInput.value = null;
@@ -97,7 +98,8 @@ export default class NewBill {
     formData.append('status', "pending"),
     formData.append('commentAdmin', ""),
     formData.append('amount', amount),
-    formData.append("file", this.file, this.fileName);
+    formData.append("file", this.file );
+    formData.append("fileName", this.fileName);
     
   
     this.store.bills()
@@ -150,6 +152,8 @@ export default class NewBill {
       status: "pending",
       commentAdmin: "",
       amount: amount,
+      fileName: this.fileName,
+      fileUrl: this.path,
     };
 
     this.updateBill(bill);

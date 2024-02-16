@@ -42,7 +42,6 @@ describe('Given I am connected as an Admin and I am on Dashboard Page', () => {
     test(('Then, it should them in the page'), () => {
       const html = DashboardFormUI(bill)
       document.body.innerHTML = html
-      {console.log(formatDateForDisplay(bill.date))}
       expect(screen.getByText(bill.vat)).toBeTruthy()
       expect(screen.getByText(bill.type)).toBeTruthy()
       expect(screen.getByText(bill.commentary)).toBeTruthy()
