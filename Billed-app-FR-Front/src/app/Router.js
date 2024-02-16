@@ -10,12 +10,12 @@ import DashboardUI from "../views/DashboardUI.js";
 import { ROUTES, ROUTES_PATH } from "../constants/routes.js";
 
 export default () => {
-  debugger
+  
   const rootDiv = document.getElementById("root");
   rootDiv.innerHTML = ROUTES({ pathname: window.location.pathname });
 
   window.onNavigate = (pathname) => {
-    debugger
+    
     window.history.pushState({}, pathname, window.location.origin + pathname);
     if (pathname === ROUTES_PATH["Login"]) {
       rootDiv.innerHTML = ROUTES({ pathname });
@@ -28,7 +28,7 @@ export default () => {
         store,
       });
     } else if (pathname === ROUTES_PATH["Bills"]) {
-debugger
+
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
       const divIcon1 = document.getElementById("layout-icon1");
       const divIcon2 = document.getElementById("layout-icon2");
@@ -38,7 +38,7 @@ debugger
       bills
         .getBills()
         .then((bills) => {
-          debugger
+          
           rootDiv.innerHTML = BillsUI({ data:  bills  });
           const divIcon1 = document.getElementById("layout-icon1");
           const divIcon2 = document.getElementById("layout-icon2");
@@ -51,7 +51,7 @@ debugger
           rootDiv.innerHTML = ROUTES({ pathname, error });
         });
     } else if (pathname === ROUTES_PATH["NewBill"]) {
-      debugger
+      
       rootDiv.innerHTML = ROUTES({ pathname, loading: true });
       new NewBill({ document, onNavigate, store, localStorage });
       const divIcon1 = document.getElementById("layout-icon1");
@@ -81,7 +81,7 @@ debugger
 
   window.onpopstate = (e) => {
     e.preventDefault();
-    debugger
+    
     const user = JSON.parse(localStorage.getItem("user"));
     if (window.location.pathname === "/" && !user) {
       document.body.style.backgroundColor = "#0E5AE5";

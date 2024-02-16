@@ -1,5 +1,4 @@
 export const formatDateForDisplay = (dateStr) => { // dateStr = "2021-01-01"  // dateStr = null
-  console.log('dateStr', dateStr)
   const checkDate = () => { // dateStr = "2021-01-01"  // dateStr = null
     
     if (dateStr !== null) { // dateStr = "2021-01-01"
@@ -27,16 +26,11 @@ export const formatDateForDisplay = (dateStr) => { // dateStr = "2021-01-01"  //
 }
 
 export const formatDateToSort = (dateStr) => {
-  console.log('dateStr', formatDateToStore(dateStr))
   const date = new Date(formatDateToStore(dateStr))
-  console.log('date', date)
   const ye = new Intl.DateTimeFormat('us', { year: 'numeric' }).format(date)
   const mo = new Intl.DateTimeFormat('us', { month: '2-digit' }).format(date)
   const da = new Intl.DateTimeFormat('us', { day: '2-digit' }).format(date)
 
-  console.log('ye', ye)
-  console.log('mo', mo)
-  console.log('da', da)
 
 
   const digitalizedDate = Number(`${ye}${mo}${da}`)
@@ -45,7 +39,7 @@ export const formatDateToSort = (dateStr) => {
 }
 
 export const formatDateToStore = (dateStr) => {
-  debugger
+  
   const checkDate = () => { 
     
     if (dateStr === null) { // dateStr = "2021-01-01"

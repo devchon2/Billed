@@ -37,7 +37,7 @@ export default function BillsUi(data, loading, error) {
   console.log('datas', datas)
   const rawDatas = datas && datas.length > 0 ? datas : data && data.length > 0 ? data : []
   console.log('rawDatas', rawDatas)
-  debugger
+  
 
   const modal = () => (`<div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"     aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

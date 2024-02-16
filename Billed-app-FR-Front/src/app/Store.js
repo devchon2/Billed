@@ -1,4 +1,3 @@
-
 const jsonOrThrowIfError = async (response) => {
   if(!response.ok) throw new Error((await response.json()).message)
   return response.json()
@@ -12,17 +11,26 @@ class Api {
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'GET'}))
   }
   async post({url, data, headers}) {
+    debugger
+    console.log('url', url)
+    console.log('data', data)
+    console.log('headers', headers)
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'POST', body: data}))
   }
   async delete({url, headers}) {
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'DELETE'}))
   }
   async patch({url, data, headers}) {
+    debugger
+    console.log('url', url)
+    console.log('data', data)
+    console.log('headers', headers)
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'PATCH', body: data}))
   }
 }
 
 const getHeaders = (headers) => {
+  debugger
   const h = { }
   if (!headers.noContentType) h['Content-Type'] = 'application/json'
   const jwt = localStorage.getItem('jwt')
@@ -42,9 +50,16 @@ class ApiEntity {
     return await (this.api.get({url: `/${this.key}`, headers: getHeaders(headers)}))
   }
   async update({data, selector, headers = {}}) {
+    debugger
+    console.log('data',data)
+    console.log('selector',selector)
+    console.log('headers',headers)
     return await (this.api.patch({url: `/${this.key}/${selector}`, headers: getHeaders(headers), data}))
   }
   async create({data, headers = {}}) {
+    debugger
+    console.log('data',data)
+    console.log('headers',headers)
     return await (this.api.post({url: `/${this.key}`, headers: getHeaders(headers), data}))
   }
   async delete({selector, headers = {}}) {

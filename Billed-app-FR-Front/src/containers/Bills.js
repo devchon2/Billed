@@ -7,8 +7,9 @@ export default class Bills {
     this.document = document
     this.onNavigate = onNavigate
     this.store = store
+    this.localStorage = localStorage
     const buttonNewBill = this.document.querySelector(`button[data-testid="btn-new-bill"]`)
-    if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill)
+    if (buttonNewBill) buttonNewBill.addEventListener('click', this.handleClickNewBill.bind(this))
     const iconEye = this.document.querySelectorAll(`div[data-testid="icon-eye"]`)
     if (iconEye) iconEye.forEach(icon => {
       icon.addEventListener('click', () => this.handleClickIconEye(icon))
@@ -40,17 +41,17 @@ export default class Bills {
   }
 
   getBills = () => {
-    debugger
+    
     if (this.store) {
-      debugger
+      
       return this.store
       .bills()
       .list()
       .then(snapshot => {
-        debugger
+        
         const bills = snapshot
           .map(bill => {
-            debugger
+            
             try {
               return {
                 ...bill,
