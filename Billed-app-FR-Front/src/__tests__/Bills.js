@@ -29,6 +29,23 @@ describe("Given I am connected as an employee", () => {
       expect(windowIcon.classList.contains("active-icon")).toEqual(true)
 
     }),
+    test("Then NewBill icon in vertical layout shouldn't be highlighted", async () => {
+
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+      window.onNavigate(ROUTES_PATH.Bills)
+      await waitFor(() => screen.getByTestId('icon-mail'))
+      const mailicon = screen.getByTestId('icon-mail')
+      expect(mailicon.classList.contains("active-icon")).toEqual(false)
+
+    }),
+
     test("Then bills should be ordered from earliest to latest", () => {
 
       document.body.innerHTML = BillsUI({ data: bills })
