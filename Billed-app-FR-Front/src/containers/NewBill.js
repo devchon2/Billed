@@ -32,22 +32,44 @@ export default class NewBill {
 
     this.fileButton = this.formNewBill.querySelector(`input#file`);
     this.submitButton = this.formNewBill.querySelector(`button#btn-send-bill`);
-    this.document.addEventListener("change", () => {
-      this.checkInputs([
-        this.formNewBill.querySelector(`select[data-testid="expense-type"]`),
-        this.formNewBill.querySelector(`input[data-testid="expense-name"]`),
-        this.formNewBill.querySelector(`input[data-testid="amount"]`),
-        this.formNewBill.querySelector(`input[data-testid="datepicker"]`),
-        this.formNewBill.querySelector(`input[data-testid="vat"]`),
-        this.formNewBill.querySelector(`input[data-testid="pct"]`),
-        this.formNewBill.querySelector(`textarea[data-testid="commentary"]`),
-      ]);
+
+    this.inputsToCheck = [
+      this.formNewBill.querySelector(`select[data-testid="expense-type"]`),
+      this.formNewBill.querySelector(`input[data-testid="expense-name"]`),
+      this.formNewBill.querySelector(`input[data-testid="amount"]`),
+      this.formNewBill.querySelector(`input[data-testid="datepicker"]`),
+      this.formNewBill.querySelector(`input[data-testid="vat"]`),
+      this.formNewBill.querySelector(`input[data-testid="pct"]`),
+      this.formNewBill.querySelector(`textarea[data-testid="commentary"]`),
+    ];
+
+    this.inputsToCheck.forEach((input) => {
+      input.addEventListener("input", () => {
+        this.checkInputs();
+      });
     });
   }
 
-  checkInputs = (arrayFromFormElements) => {
-    const enableValidate = arrayFromFormElements.every(
-      (e) => e.value !== "" && e.value !== null
+  checkInputs = () => {
+    
+
+    const valueToCheck = [
+      this.formNewBill.querySelector(`select[data-testid="expense-type"]`).value,
+      this.formNewBill.querySelector(`input[data-testid="expense-name"]`).value,
+      this.formNewBill.querySelector(`input[data-testid="amount"]`).value,
+      this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value,
+      this.formNewBill.querySelector(`input[data-testid="vat"]`).value,
+      this.formNewBill.querySelector(`input[data-testid="pct"]`).value,
+      this.formNewBill.querySelector(`textarea[data-testid="commentary"]`).value,
+    ];
+
+    
+
+    
+
+
+    const enableValidate = valueToCheck.every(
+      el => el !== "" && el !== undefined && el !== null
     );
     this.fileButton.disabled = !enableValidate;
     if (this.fileButton.files[0] !== undefined) {
@@ -112,7 +134,6 @@ export default class NewBill {
       this.billId = id;
       this.key = key;
       this.path = filePath.replace('public\\', 'public/');
-      console.log("this.path", this.path);
     })
     .catch((error) => console.error(error));
   };

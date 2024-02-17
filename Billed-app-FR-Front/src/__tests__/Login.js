@@ -6,6 +6,8 @@ import LoginUI from "../views/LoginUI";
 import Login from "../containers/Login.js";
 import { ROUTES } from "../constants/routes";
 import { fireEvent, screen } from "@testing-library/dom";
+import  "../app/Store.js";
+import { localStorageMock } from "../__mocks__/localStorage.js";
 
 describe("Given that I am a user on login page", () => {
   describe("When I do not fill fields and I click on employee button Login In", () => {
@@ -117,7 +119,7 @@ describe("Given that I am a user on login page", () => {
   });
 });
 
-describe("Given that I am a user on login page", () => {
+describe("Given that I am an Admin on login page", () => {
   describe("When I do not fill fields and I click on admin button Login In", () => {
     test("Then It should renders Login page", () => {
       document.body.innerHTML = LoginUI();
@@ -156,6 +158,12 @@ describe("Given that I am a user on login page", () => {
       fireEvent.submit(form);
       expect(screen.getByTestId("form-admin")).toBeTruthy();
     });
+    test("then it should not get user and jwt data in localstorage", () => {
+      document.body.innerHTML = LoginUI();
+      const lStorage = localStorage;
+      expect(lStorage.getItem("user")).toBe(null);
+      expect(lStorage.getItem("jwt")).toBe(null);
+  });
   });
 
   describe("When I do fill fields in correct format and I click on admin button Login In", () => {

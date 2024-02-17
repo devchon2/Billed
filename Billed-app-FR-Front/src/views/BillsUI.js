@@ -31,15 +31,12 @@ const rows = (data) => {
 
 
 export default function BillsUi(data, loading, error) {
-  console.log('data', data)
 
   const {data: datas} = data
-  console.log('datas', datas)
   const rawDatas = datas && datas.length > 0 ? datas : data && data.length > 0 ? data : []
-  console.log('rawDatas', rawDatas)
   
 
-  const modal = () => (`<div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"     aria-hidden="true">
+  const modal = () => (`<div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"     aria-hidden="true" data-testid='modale-active'>
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
