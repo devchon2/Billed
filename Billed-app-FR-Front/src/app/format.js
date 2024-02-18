@@ -39,7 +39,6 @@ export const formatDateToSort = (dateStr) => {
 }
 
 export const formatDateToStore = (dateStr) => {
-  
   const checkDate = () => { 
     
     if (dateStr === null) { // dateStr = "2021-01-01"
@@ -47,17 +46,18 @@ export const formatDateToStore = (dateStr) => {
       return  
     } 
     
-    return new Date(dateStr)
-  }
-
-  const date = checkDate()
-    .toLocaleDateString('fr-FR', {
+    return new Date(dateStr).toLocaleDateString('fr-FR', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit'
     })
+  }
+
+  const date = checkDate()
+
   
   const splittedDate = date.split('/')
+
   const da = splittedDate[0].padStart(2, '0')
   const mo = splittedDate[1].padStart(2, '0')
   const ye = splittedDate[2].padStart(4, '0')

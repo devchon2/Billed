@@ -61,8 +61,9 @@ export default class NewBill {
     const amount =
       parseInt(this.formNewBill.querySelector(`input[data-testid="amount"]`).value) ||
       0;
-    const date = formatDateToStore(
-      this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value);
+    const date = 
+      this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value;
+      console.log('date', date);
     const vat = `${this.formNewBill.querySelector(`input[data-testid="vat"]`).value.toString() || '0'}`;
     const pct =
       parseInt(this.formNewBill.querySelector(`input[data-testid="pct"]`).value) || 20;
@@ -74,7 +75,7 @@ export default class NewBill {
     formData.append("name", expenseName);
     formData.append('type', expanseType),
     formData.append('email', this.email),
-    formData.append('date', date),
+    date ? formData.append('date', formatDateToStore(date)) : null,
     formData.append('vat', vat),
     formData.append('pct', pct),
     formData.append('commentary', commentary),
