@@ -32,52 +32,9 @@ export default class NewBill {
 
     this.fileButton = this.formNewBill.querySelector(`input#file`);
     this.submitButton = this.formNewBill.querySelector(`button#btn-send-bill`);
-    this.fileButton.disabled = true;
-    this.submitButton.disabled = true;
-
-    this.inputsToCheck = [
-      this.formNewBill.querySelector(`select[data-testid="expense-type"]`),
-      this.formNewBill.querySelector(`input[data-testid="expense-name"]`),
-      this.formNewBill.querySelector(`input[data-testid="amount"]`),
-      this.formNewBill.querySelector(`input[data-testid="datepicker"]`),
-      this.formNewBill.querySelector(`input[data-testid="vat"]`),
-      this.formNewBill.querySelector(`input[data-testid="pct"]`),
-      this.formNewBill.querySelector(`textarea[data-testid="commentary"]`),
-      this.formNewBill.querySelector(`input[data-testid="file"]`),
-    ];
-
-    this.inputsToCheck.forEach((input) => {
-      input.addEventListener("input", () => {
-        this.checkInputs();
-        
-      });
-    });
+    
   }
 
-  checkInputs = () => {
-    
-
-    const valueToCheck = [
-      this.formNewBill.querySelector(`select[data-testid="expense-type"]`).value,
-      this.formNewBill.querySelector(`input[data-testid="expense-name"]`).value,
-      this.formNewBill.querySelector(`input[data-testid="amount"]`).value,
-      this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value,
-      this.formNewBill.querySelector(`input[data-testid="vat"]`).value,
-      this.formNewBill.querySelector(`input[data-testid="pct"]`).value,
-      this.formNewBill.querySelector(`textarea[data-testid="commentary"]`).value,
-      
-    ];
-    const fileIn = this.formNewBill.querySelector(`input[data-testid="file"]`).files[0] ;
-
-    const enableValidate = valueToCheck.every(
-      el => el !== "" && el !== undefined && el !== null
-    );
-
-  this.fileButton.disabled = !enableValidate;
-    if (fileIn && enableValidate) {
-      this.submitButton.disabled = false;
-    }
-  };
 
   handleChangeFile = (e) => {
     e.preventDefault();
@@ -86,8 +43,10 @@ export default class NewBill {
     this.fileName = this.file.name;
   
     if (!this.grantedMimeType.includes(this.mimetype)) {
+      this.fileInput.files = null;
       this.fileInput.value = null;
       this.file = null;
+      this.fileName = null;
       alert("Mauvais format de fichier! \n Seuls les fichiers .jpg, .jpeg, .png et .gif sont acceptés");
       return;
     }
