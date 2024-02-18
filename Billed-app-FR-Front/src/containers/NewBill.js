@@ -32,6 +32,8 @@ export default class NewBill {
 
     this.fileButton = this.formNewBill.querySelector(`input#file`);
     this.submitButton = this.formNewBill.querySelector(`button#btn-send-bill`);
+    this.fileButton.disabled = true;
+    this.submitButton.disabled = true;
 
     this.inputsToCheck = [
       this.formNewBill.querySelector(`select[data-testid="expense-type"]`),
@@ -41,11 +43,13 @@ export default class NewBill {
       this.formNewBill.querySelector(`input[data-testid="vat"]`),
       this.formNewBill.querySelector(`input[data-testid="pct"]`),
       this.formNewBill.querySelector(`textarea[data-testid="commentary"]`),
+      this.formNewBill.querySelector(`input[data-testid="file"]`),
     ];
 
     this.inputsToCheck.forEach((input) => {
       input.addEventListener("input", () => {
         this.checkInputs();
+        
       });
     });
   }
@@ -61,19 +65,17 @@ export default class NewBill {
       this.formNewBill.querySelector(`input[data-testid="vat"]`).value,
       this.formNewBill.querySelector(`input[data-testid="pct"]`).value,
       this.formNewBill.querySelector(`textarea[data-testid="commentary"]`).value,
+      
     ];
-
-    
-
-    
-
+    const fileIn = this.formNewBill.querySelector(`input[data-testid="file"]`).files[0] ;
 
     const enableValidate = valueToCheck.every(
       el => el !== "" && el !== undefined && el !== null
     );
-    this.fileButton.disabled = !enableValidate;
-    if (this.fileButton.files[0] !== undefined) {
-      this.submitButton.disabled = !enableValidate;
+
+  this.fileButton.disabled = !enableValidate;
+    if (fileIn && enableValidate) {
+      this.submitButton.disabled = false;
     }
   };
 
