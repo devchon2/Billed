@@ -102,7 +102,7 @@ describe("Given I am connected as an employee", () => {
       const onNavigate = jest.fn((pathname) => {
         document.body.innerHTML = ROUTES({ pathname });
       });
-      new NewBill({
+      const newBill = new NewBill({
         document,
         onNavigate: onNavigate,
         localStorage: window.localStorage,
@@ -120,30 +120,30 @@ describe("Given I am connected as an employee", () => {
         }
       );
 
-      const expenseName = "Facture Free";
-      const expanseType = "Téléphone";
-      const date = '01/01/2021';
-      const amount = 20;
-      const vat = "80";
-      const pct = 20;
-      const commentary = "Commentaire";
-      const fileName = "facturefreemobile.jpg";
-      const file = validTypeFile;
-      const email = "employee@test.tld";
+      newBill.expenseName = "Facture Free";
+      newBill.expanseType = "Téléphone";
+      newBill.date = "1983-10-17";
+      newBill.amount = 20;
+      newBill.vat = "80";
+      newBill.pct = 20;
+      newBill.commentary = "Commentaire";
+      newBill.fileName = "facturefreemobile.jpg";
+      newBill.file = validTypeFile;
+      newBill.email = "employee@test.tld";
 
-      const formData = new FormData();
-      formData.append("name", expenseName);
-      formData.append("type", expanseType);
-      formData.append("email", email);
-      formData.append("date",date);
-      formData.append("vat", vat);
-      formData.append("pct", pct);
-      formData.append("commentary", commentary);
-      formData.append("status", "pending");
-      formData.append("commentAdmin", "");
-      formData.append("amount", amount);
-      formData.append("file", file);
-      formData.append("fileName", fileName);
+      newBill.formData = new FormData();
+      newBill.formData.append("name", newBill.expenseName);
+      newBill.formData.append("type", newBill.expanseType);
+      newBill.formData.append("email", newBill.email);
+      newBill.formData.append("date", formatDateToStore(newBill.date));
+      newBill.formData.append("vat", newBill.vat);
+      newBill.formData.append("pct", newBill.pct);
+      newBill.formData.append("commentary", newBill.commentary);
+      newBill.formData.append("status", "pending");
+      newBill.formData.append("commentAdmin", "");
+      newBill.formData.append("amount", newBill.amount);
+      newBill.formData.append("file", newBill.file);
+      newBill.formData.append("fileName", newBill.fileName);
 
       fireEvent.change(screen.getByTestId("file"), {
         target: {
@@ -155,7 +155,7 @@ describe("Given I am connected as an employee", () => {
         return {
           create: jest.fn().mockResolvedValue({
             filePath: "public/facturefreemobile.jpg",
-            key: "47qAXb6fIm2zOKkLzMro",
+            key: 0,
             id: "47qAXb6fIm2zOKkLzMro",
           }),
         };
@@ -163,16 +163,131 @@ describe("Given I am connected as an employee", () => {
 
       expect(
         Store.bills().create({
-          data: formData,
+          data: newBill.formData,
           headers: {
             noContentType: true,
           },
         })
       ).resolves.toEqual({
         filePath: "public/facturefreemobile.jpg",
-        key: "47qAXb6fIm2zOKkLzMro",
+        key: 0,
         id: "47qAXb6fIm2zOKkLzMro",
       });
     });
+    test("then the billId and filePath is managed", async () => {
+      const newBill = new NewBill({
+        document,
+        localStorage: window.localStorage,
+        store: Store,
+      });
+
+      const validTypeFile = new File(
+        ["facturefreemobile.jpg"],
+        "facturefreemobile.jpg",
+        {
+          createdAt: Date.now().toString(),
+          type: "image/jpg",
+          name: "facturefreemobile.jpg",
+          webkitRelativePath: "",
+        }
+      );
+
+      newBill.expenseName = "Facture Free";
+      newBill.expanseType = "Téléphone";
+      newBill.date = "2021-04-04";
+      newBill.amount = 20;
+      newBill.vat = "80";
+      newBill.pct = 20;
+      newBill.commentary = "Commentaire";
+      newBill.fileName = "facturefreemobile.jpg";
+      newBill.file = validTypeFile;
+      newBill.email = "employee@test.tld";
+
+      newBill.formData = new FormData();
+      newBill.formData.append("name", newBill.expenseName);
+      newBill.formData.append("type", newBill.expanseType);
+      newBill.formData.append("email", newBill.email);
+      newBill.formData.append("date", formatDateToStore(newBill.date));
+      newBill.formData.append("vat", newBill.vat);
+      newBill.formData.append("pct", newBill.pct);
+      newBill.formData.append("commentary", newBill.commentary);
+      newBill.formData.append("status", "pending");
+      newBill.formData.append("commentAdmin", "");
+      newBill.formData.append("amount", newBill.amount);
+      newBill.formData.append("file", newBill.file);
+
+      Store.bills = jest.fn().mockImplementation(() => {
+        return {
+          create: jest.fn().mockResolvedValue({
+            filePath: "public/facturefreemobile.jpg",
+            key: 0,
+            id: "47qAXb6fIm2zOKkLzMro",
+          }),
+        };
+      });
+      fireEvent.change(screen.getByTestId("file"), {
+        target: {
+          files: [validTypeFile],
+        },
+      });
+      expect(
+        Store.bills().create({
+          data: newBill.formData,
+          headers: {
+            noContentType: true,
+          },
+        })
+      )
+        .resolves.toEqual({
+          filePath: "public/facturefreemobile.jpg",
+          key: 0,
+          id: "47qAXb6fIm2zOKkLzMro",
+        })
+        .then(() => {
+          expect(newBill.billId).toBe("47qAXb6fIm2zOKkLzMro");
+          expect(newBill.key).toBe(0);
+          expect(newBill.path).toBe("public/facturefreemobile.jpg");
+        });
+    });
   });
-});
+    //  describe("When I submit the form", () => {
+    //   test("then the form is updated", () => {
+        
+        
+    //     Store.bills = jest.fn().mockImplementation(async () => {
+    //       return {
+    //         update: await jest.fn().mockResolvedValue(
+    //           {
+    //             "id": "47qAXb6fIm2zOKkLzMro",
+    //             "vat": "80",
+    //             "fileUrl": "https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",
+    //             "status": "pending",
+    //             "type": "Hôtel et logement",
+    //             "commentary": "séminaire billed",
+    //             "name": "encore",
+    //             "fileName": "preview-facture-free-201801-pdf-1.jpg",
+    //             "date": "2004-04-04",
+    //             "amount": 400,
+    //             "commentAdmin": "ok",
+    //             "email": "a@a",
+    //             "pct": 20
+    //           }
+    //         ),
+    //       };
+    //     });
+        
+        
+    //     const handleSubmit = jest.fn();
+        
+
+        
+    //     newBill.handleSubmit = handleSubmit;
+    //     newBill.formNewBill = document.querySelector("form");
+    //     newBill.formNewBill.addEventListener("submit", newBill.handleSubmit);
+    //     fireEvent.submit(newBill.formNewBill);
+    //     expect(handleSubmit).toHaveBeenCalled();
+    //   }
+    // );
+    //   });
+    });
+
