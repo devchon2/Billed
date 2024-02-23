@@ -24,10 +24,11 @@ export default class NewBill {
   }
   handleChangeFile = (e) => {
     e.preventDefault();
-    const file = this.document.querySelector(`input[data-testid="file"]`)
-      .files[0];
+    const fileInput = this.document.querySelector(`input[data-testid="file"]`);
+    
+    let file = fileInput.files[0];
 
-    const fileName = file.name;
+    let fileName = file.name;
     const mimetype = file.type;
     const grantedMimeType = [
       "image/png",
@@ -37,10 +38,10 @@ export default class NewBill {
     ];
 
     if (!grantedMimeType.includes(mimetype)) {
-      this.fileInput.files = null;
-      this.fileInput.value = null;
-      this.file = null;
-      this.fileName = null;
+      fileInput.files = null;
+      fileInput.value = null;
+      file = undefined;
+      fileName = undefined;
       alert(
         "Mauvais format de fichier! \n Seuls les fichiers .jpg, .jpeg, .png et .gif sont acceptés"
       );
