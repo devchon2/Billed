@@ -1,6 +1,6 @@
-import { formatDateToStore } from "../app/format.js";
 import { ROUTES_PATH } from "../constants/routes.js";
 import Logout from "./Logout.js";
+import { formatDateToStore } from "../app/format.js";
 
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
@@ -8,117 +8,87 @@ export default class NewBill {
     this.onNavigate = onNavigate;
     this.store = store;
 
-    this.formNewBill = this.document.querySelector(
+    const formNewBill = this.document.querySelector(
       `form[data-testid="form-new-bill"]`
     );
-    this.formNewBill.addEventListener("submit", this.handleSubmit.bind(this));
+    formNewBill.addEventListener("submit", this.handleSubmit);
 
-    this.fileInput = this.document.querySelector(`input[data-testid="file"]`);
-    this.fileInput.addEventListener("change", this.handleChangeFile.bind(this));
-    this.fileName = null;
-    this.billId = null;
-    this.grantedMimeType = [
+    const fileInput = this.document.querySelector(`input[data-testid="file"]`);
+    fileInput.addEventListener("change", this.handleChangeFile);
+
+    this.path = null;
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.email = this.user.email;
+
+    new Logout({ document, localStorage, onNavigate });
+  }
+  handleChangeFile = (e) => {
+    e.preventDefault();
+    const file = this.document.querySelector(`input[data-testid="file"]`)
+      .files[0];
+
+    const fileName = file.name;
+    const mimetype = file.type;
+    const grantedMimeType = [
       "image/png",
       "image/jpg",
       "image/jpeg",
       "image/gif",
     ];
 
-    this.user = JSON.parse(localStorage.getItem("user"));
-    this.email = `${this.user.email}`;
-    this.token = localStorage.getItem("jwt");
-
-    new Logout({ document, localStorage, onNavigate });
-
-    this.fileButton = this.formNewBill.querySelector(`input#file`);
-    this.submitButton = this.formNewBill.querySelector(`button#btn-send-bill`);
-    
-  }
-
-
-  handleChangeFile = (e) => {
-    e.preventDefault();
-    this.file = this.fileInput.files[0];
-    this.mimetype = this.file.type;
-    this.fileName = this.file.name;
-  
-    if (!this.grantedMimeType.includes(this.mimetype)) {
+    if (!grantedMimeType.includes(mimetype)) {
       this.fileInput.files = null;
       this.fileInput.value = null;
       this.file = null;
       this.fileName = null;
-      alert("Mauvais format de fichier! \n Seuls les fichiers .jpg, .jpeg, .png et .gif sont acceptés");
+      alert(
+        "Mauvais format de fichier! \n Seuls les fichiers .jpg, .jpeg, .png et .gif sont acceptés"
+      );
       return;
     }
 
-    const expanseType = `${this.formNewBill.querySelector(
-      `select[data-testid="expense-type"]`
-    ).value}`;
-    const expenseName = `${this.formNewBill.querySelector(
-      'input[data-testid="expense-name"]'
-    ).value}`;
-
-    const amount =
-      parseInt(this.formNewBill.querySelector(`input[data-testid="amount"]`).value) ||
-      0;
-    const date = 
-      this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value;
-      console.log('date', date);
-    const vat = `${this.formNewBill.querySelector(`input[data-testid="vat"]`).value.toString() || '0'}`;
-    const pct =
-      parseInt(this.formNewBill.querySelector(`input[data-testid="pct"]`).value) || 20;
-    const commentary = `${this.formNewBill.querySelector(
-      `textarea[data-testid="commentary"]`
-    ).value}`;
-  
     const formData = new FormData();
-    formData.append("name", expenseName);
-    formData.append('type', expanseType),
-    formData.append('email', this.email),
-    date ? formData.append('date', formatDateToStore(date)) : null,
-    formData.append('vat', vat),
-    formData.append('pct', pct),
-    formData.append('commentary', commentary),
-    formData.append('status', "pending"),
-    formData.append('commentAdmin', ""),
-    formData.append('amount', amount),
-    formData.append("file", this.file );
-    formData.append("fileName", this.fileName);
-    
-  
-    this.store.bills()
+    formData.append("file", file);
+    formData.append("email", this.email);
+
+    this.store
+      .bills()
       .create({
         data: formData,
         headers: {
           noContentType: true,
-        }})
-    .then(({ filePath, key, id }) => {
-      this.billId = id;
-      this.key = key;
-      this.path = filePath.replace('public\\', 'public/');
-    })
-    .catch((error) => console.error(error));
+        },
+      })
+      //Modified by RCHON
+      .then(({ filePath, id, key }) => {
+        console.log("filePath)", filePath, "id", id, "key", key);
+        this.billId = id;
+        this.key = key;
+        this.path = filePath.replace("public\\", "public/");
+        this.fileName = fileName;
+        //End of modification
+      })
+      .catch((error) => console.error(error));
   };
-
   handleSubmit = (e) => {
-    debugger;
     e.preventDefault();
-    const expanseType = `${this.formNewBill.querySelector(
+    const formNewBill = this.document.querySelector(`form[data-testid="form-new-bill"]`);
+    const expanseType = `${formNewBill.querySelector(
       `select[data-testid="expense-type"]`
     ).value}`;
-    const expenseName = `${this.formNewBill.querySelector(
+    const expenseName = `${formNewBill.querySelector(
       'input[data-testid="expense-name"]'
     ).value}`;
 
     const amount =
-      parseInt(this.formNewBill.querySelector(`input[data-testid="amount"]`).value) ||
+      parseInt(formNewBill.querySelector(`input[data-testid="amount"]`).value) ||
       0;
     const date = formatDateToStore(
-      this.formNewBill.querySelector(`input[data-testid="datepicker"]`).value);
-    const vat = `${this.formNewBill.querySelector(`input[data-testid="vat"]`).value.toString() || '0'}`;
+      formNewBill.querySelector(`input[data-testid="datepicker"]`).value);
+    const vat = `${formNewBill.querySelector(`input[data-testid="vat"]`).value.toString() || '0'}`;
     const pct =
-      parseInt(this.formNewBill.querySelector(`input[data-testid="pct"]`).value) || 20;
-    const commentary = `${this.formNewBill.querySelector(
+      parseInt(formNewBill.querySelector(`input[data-testid="pct"]`).value) || 20;
+    const commentary = `${formNewBill.querySelector(
       `textarea[data-testid="commentary"]`
     ).value}`;
     
@@ -133,12 +103,12 @@ export default class NewBill {
       pct: pct,
       commentary: commentary,
       status: "pending",
-      commentAdmin: "",
       amount: amount,
       fileName: this.fileName,
+      //Modified by RCHON
       fileUrl: this.path,
+      //End of modification
     };
-
     this.updateBill(bill);
   };
 
@@ -149,9 +119,7 @@ export default class NewBill {
         .bills()
         .update({
           data: JSON.stringify(bill),
-          headers: {
-            noContentType: true,
-          },
+
           selector: this.key,
         })
         .then(() => {
