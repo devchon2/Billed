@@ -95,8 +95,11 @@ export default class {
   };
 
   handleEditTicket(e, bill, bills) {
-    this.counter = 0; //reinitialize counter for each ticket
+
+    //Modified By RCHON
+    this.counter = undefined; //reinitialize counter for each ticket
     this.id = undefined;
+    //End of modification
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0;
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id;
     if (this.counter % 2 === 0) {

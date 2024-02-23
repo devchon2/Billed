@@ -1,5 +1,5 @@
 import { ROUTES_PATH } from '../constants/routes.js'
-import { formatDateForDisplay, formatStatus } from "../app/format.js"
+import { formatStatus } from "../app/format.js"
 import Logout from "./Logout.js"
 
 export default class Bills {
@@ -32,14 +32,7 @@ export default class Bills {
     $('#modaleFile').modal('show')
   }
 
-  handleClickIconDownload = () => {
-    const link = document.getElementById('download')
-  link.click()    
-    
-
-    
-  }
-
+  
   getBills = () => {
     
     if (this.store) {
