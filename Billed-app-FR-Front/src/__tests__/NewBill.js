@@ -42,6 +42,17 @@ describe("when i'm landed on newBill page ", () => {
     });
     const fileInput = screen.getByTestId("file");
 
+    const validTypeFile = new File(
+      ["facturefreemobile.jpg"],
+      "facturefreemobile.jpg",
+      {
+        type: "image/jpg",
+      }
+    );
+    const formData = new FormData();
+    formData.append("file", validTypeFile);
+    formData.append("email", "employee@test.tld");
+
     test("then If I load a wrong file", () => {
       const wrongTypeFile = new File(
         ["facturefreemobile.pdf"],
@@ -63,14 +74,6 @@ describe("when i'm landed on newBill page ", () => {
     });
 
     test("then If I load a valid file", () => {
-      const validTypeFile = new File(
-        ["facturefreemobile.jpg"],
-        "facturefreemobile.jpg",
-        {
-          type: "image/jpg",
-        }
-      );
-
       fireEvent.change(file, { target: { files: [validTypeFile] } });
 
       expect(fileInput.files[0]).toStrictEqual(validTypeFile);
@@ -81,27 +84,13 @@ describe("when i'm landed on newBill page ", () => {
     test("then a call for createbill is made", () => {
       jest.spyOn(newbill, "handleChangeFile");
 
-      const validTypeFile = new File(
-        ["facturefreemobile.jpg"],
-        "facturefreemobile.jpg",
-        {
-          type: "image/jpg",
-        }
-      );
-
       const handleChange = jest.fn(() => newbill.handleChangeFile);
 
       fireEvent.change(file, { target: { files: [validTypeFile] } });
 
-      const formData = new FormData();
-      formData.append("file", validTypeFile);
-      formData.append("email", "employee@test.tld");
-
       async () => await expect(handleChange).toHaveBeenCalled();
       async () => await expect(newbill.store.bills.create).toHaveBeenCalled();
-      async () =>
-        await expect(newbill.store.bills.create)
-          .toHaveBeenCalledWith({
+      async () => await expect(newbill.store.bills.create).toHaveBeenCalledWith({
             data: formData,
             headers: { noContentType: true },
           })
@@ -109,14 +98,22 @@ describe("when i'm landed on newBill page ", () => {
             filePath: "public/facturefreemobile.jpg",
             key: "47qAXb6fIm2zOKkLzMro",
             id: 0,
-          })
-          .then(({filePath,id,key}) => {
-            expect(newBill.billId).toBe(id);
-            expect(newBill.key).toBe(key);
-            expect(newBill.path).toBe(filePath.replace("public\\", "public/"));
-            expect(newBill.fileName).toBe("facturefreemobile.jpg");
           });
+    });
+    test("then the bill is created and billID ,key ,id are managed", () => { ///A revoir avec Stéphane 
+      async () =>
+        await expect(newbill.store.bills.create)
+          .toHaveBeenCalledWith({
+            data: formData,
+            headers: { noContentType: true },
+          })
+          .then(({ filePath, id, key }) => {
+            expect(newbill.billId).toBe(id);
+            expect(newbill.key).toBe(key);
+            expect(newbill.path).toBe(filePath.replace("public\\", "public/"));
+            expect(newbill.fileName).toBe("facturefreemobile.jpg");
+          })
+          .catch((error) => expect(console.error(error)).toBeCalled());
     });
   });
 });
-
