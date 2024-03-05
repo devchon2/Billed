@@ -41,7 +41,7 @@ export const formatDateToSort = (dateStr) => {
 export const formatDateToStore = (dateStr) => {
   const checkDate = () => { 
     
-    if (dateStr === null) { // dateStr = "2021-01-01"
+    if (dateStr === null || dateStr === undefined) { // dateStr = "2021-01-01"
       
       return  
     } 

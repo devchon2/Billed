@@ -84,8 +84,8 @@ export default class NewBill {
     const amount =
       parseInt(formNewBill.querySelector(`input[data-testid="amount"]`).value) ||
       0;
-    const date = formatDateToStore(
-      formNewBill.querySelector(`input[data-testid="datepicker"]`).value);
+    const date = 
+      formNewBill.querySelector(`input[data-testid="datepicker"]`).value.toString();
     const vat = `${formNewBill.querySelector(`input[data-testid="vat"]`).value.toString() || '0'}`;
     const pct =
       parseInt(formNewBill.querySelector(`input[data-testid="pct"]`).value) || 20;

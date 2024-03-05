@@ -24,14 +24,12 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
-  debugger ;
   const sortedDatas = sortBills(data)
   return sortedDatas.map(bill => row(bill)).join("")
 }
 
 
 export default function BillsUi({data, loading, error}) {
-  debugger ;
   const rawDatas = data && data.length > 0 ? data: []
   
 
