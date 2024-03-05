@@ -1,6 +1,4 @@
-
-
-import { fireEvent, screen,  } from "@testing-library/dom";
+import { fireEvent, screen } from "@testing-library/dom";
 import { waitFor } from "@testing-library/dom";
 import NewBillUI from "../views/NewBillUI.js";
 import NewBill from "../containers/NewBill.js";
@@ -245,9 +243,8 @@ describe("Given I am connected as an employee", () => {
           expect(newBill.billId).toBe("47qAXb6fIm2zOKkLzMro");
           expect(newBill.key).toBe(0);
           expect(newBill.path).toBe("public/facturefreemobile.jpg");
-        });
+        })
     });
-    
   });
   describe("When I submit the form", () => {
     beforeEach(() => {
@@ -263,67 +260,63 @@ describe("Given I am connected as an employee", () => {
         })
       );
 
-
-
       const html = NewBillUI(); // set up the document body
       document.body.innerHTML = html;
 
-    const onNavigate = jest.fn((pathname) => {
-      document.body.innerHTML = ROUTES({ pathname });
-    
-    const newBill = new NewBill({
-      document,
-      onNavigate: onNavigate,
-      localStorage: window.localStorage,
-      store: Store,
+      const onNavigate = jest.fn((pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+
+        const newBill = new NewBill({
+          document,
+          onNavigate: onNavigate,
+          localStorage: window.localStorage,
+          store: Store,
+        });
+      });
     });
-    
-  });
-});
-  
-    
-test("then API 500 error during bill creation is properly handled", async () => {
-  const onNavigate = jest.fn((pathname) => {
-    document.body.innerHTML = ROUTES({ pathname });
-  });
-  const newBill = new NewBill({
-    document,
-    onNavigate: onNavigate,
-    localStorage: window.localStorage,
-    store: Store,
-  });
 
-  jest.spyOn(console, "error").mockImplementation(() => {});
+    test("then API 500 error during bill creation is properly handled", async () => {
+      const onNavigate = jest.fn((pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      });
+      const newBill = new NewBill({
+        document,
+        onNavigate: onNavigate,
+        localStorage: window.localStorage,
+        store: Store,
+      });
 
-  const validTypeFile = new File(
-    ["facturefreemobile.jpg"],
-    "facturefreemobile.jpg",
-    {
-      type: "image/jpg",
-      name: "facturefreemobile.jpg",
-      lastModified: Date.now(),
-    }
-  );
+      jest.spyOn(console, "error").mockImplementation(() => {});
 
-  fireEvent.change(screen.getByTestId("file"), {
-    target: {
-      files: [validTypeFile],
-    },
-  });
+      const validTypeFile = new File(
+        ["facturefreemobile.jpg"],
+        "facturefreemobile.jpg",
+        {
+          type: "image/jpg",
+          name: "facturefreemobile.jpg",
+          lastModified: Date.now(),
+        }
+      );
 
-  // Simulate API 500 error when updating the bill
-  Store.bills = jest.fn().mockImplementation(() => {
-    return {
-      update: jest.fn().mockRejectedValue(new Error("500")),
-    };
-  });
+      fireEvent.change(screen.getByTestId("file"), {
+        target: {
+          files: [validTypeFile],
+        },
+      });
 
-  // Simulate form submission
-  const form = screen.getByTestId("form-new-bill");
-  fireEvent.submit(form);
+      // Simulate API 500 error when updating the bill
+      Store.bills = jest.fn().mockImplementation(() => {
+        return {
+          update: jest.fn().mockRejectedValue(new Error("500")),
+        };
+      });
 
-  // Check that the API 500 error is properly handled and displayed to the user
-  async () => await expect(newBill.updateBill).resolves.toEqual("500");
-});
+      // Simulate form submission
+      const form = screen.getByTestId("form-new-bill");
+      fireEvent.submit(form);
+
+      // Check that the API 500 error is properly handled and displayed to the user
+      async () => await expect(newBill.updateBill).resolves.toEqual("500");
+    });
   });
 });
