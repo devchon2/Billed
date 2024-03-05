@@ -26,7 +26,7 @@ export const formatDateForDisplay = (dateStr) => { // dateStr = "2021-01-01"  //
 }
 
 export const formatDateToSort = (dateStr) => {
-  const date = new Date(formatDateToStore(dateStr))
+  const date = new Date(dateStr)
   const ye = new Intl.DateTimeFormat('us', { year: 'numeric' }).format(date)
   const mo = new Intl.DateTimeFormat('us', { month: '2-digit' }).format(date)
   const da = new Intl.DateTimeFormat('us', { day: '2-digit' }).format(date)

@@ -24,16 +24,15 @@ const row = (bill) => {
 };
 
 const rows = (data) => {
-
-  const sortedDatas = data && data.length > 0 ? sortBills(data) : []
+  debugger ;
+  const sortedDatas = sortBills(data)
   return sortedDatas.map(bill => row(bill)).join("")
 }
 
 
-export default function BillsUi(data, loading, error) {
-
-  const {data: datas} = data
-  const rawDatas = datas && datas.length > 0 ? datas : data && data.length > 0 ? data : []
+export default function BillsUi({data, loading, error}) {
+  debugger ;
+  const rawDatas = data && data.length > 0 ? data: []
   
 
   const modal = () => (`<div class="modal fade" id="modaleFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"     aria-hidden="true" data-testid='modale-active'>
