@@ -86,7 +86,7 @@ export default class {
   }
 
   handleEditTicket(e, bill, bills) {
-    console.log(e.target)
+    // console.log(e.target)
     if (this.counter === undefined || this.id !== bill.id) this.counter = 0
     if (this.id === undefined || this.id !== bill.id) this.id = bill.id
     if (this.counter % 2 === 0) {
@@ -132,7 +132,11 @@ export default class {
   }
 
   handleShowTickets(e, bills, index) {
-    console.log(e.target)
+    debugger;
+//     console.log('index:', index)
+//         console.log('this.index:', this.index)
+// console.log('counter:', this.counter)
+    
     if (this.counter === undefined || this.index !== index) this.counter = 0
     if (this.index === undefined || this.index !== index) this.index = index
     if (this.counter % 2 === 0) {
@@ -140,16 +144,29 @@ export default class {
       $(`#status-bills-container${this.index}`)
         .html(cards(filteredBills(bills, getStatus(this.index))))
       this.counter ++
+//       console.log(e.target)
+//     console.log('index:', index)
+//         console.log('this.index:', this.index)
+// console.log('counter:', this.counter)
+// console.log('bills:', bills)
     } else {
       $(`#arrow-icon${this.index}`).css({ transform: 'rotate(90deg)'})
       $(`#status-bills-container${this.index}`)
         .html("")
-      this.counter ++
+//       this.counter ++
+//       console.log(e.target)
+//     console.log('index:', index)
+//         console.log('this.index:', this.index)
+// console.log('counter:', this.counter)
     }
 
     bills.forEach(bill => {
+      debugger;
+      //Modified by RCHON
+      if (bill.status === getStatus(this.index)) {
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
-    })
+    }})
+    // End of modification (add condition)
 
     return bills
 
