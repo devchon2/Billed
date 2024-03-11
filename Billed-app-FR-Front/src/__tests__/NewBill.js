@@ -274,7 +274,7 @@ describe("Given I am connected as an employee", () => {
         });
       });
     });
-
+    
     test("then API 500 error during bill creation is properly handled", async () => {
       const onNavigate = jest.fn((pathname) => {
         document.body.innerHTML = ROUTES({ pathname });

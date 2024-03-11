@@ -12,9 +12,7 @@ class Api {
   }
   async post({url, data, headers}) {
     
-    console.log('url', url)
-    console.log('data', data)
-    console.log('headers', headers)
+    
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'POST', body: data}))
   }
   async delete({url, headers}) {
@@ -22,9 +20,7 @@ class Api {
   }
   async patch({url, data, headers}) {
     
-    console.log('url', url)
-    console.log('data', data)
-    console.log('headers', headers)
+   
     return jsonOrThrowIfError(await fetch(`${this.baseUrl}${url}`, {headers, method: 'PATCH', body: data}))
   }
 }
@@ -51,15 +47,12 @@ class ApiEntity {
   }
   async update({data, selector, headers = {}}) {
     
-    console.log('data',data)
-    console.log('selector',selector)
-    console.log('headers',headers)
+   
     return await (this.api.patch({url: `/${this.key}/${selector}`, headers: getHeaders(headers), data}))
   }
   async create({data, headers = {}}) {
     
-    console.log('data',data)
-    console.log('headers',headers)
+    
     return await (this.api.post({url: `/${this.key}`, headers: getHeaders(headers), data}))
   }
   async delete({selector, headers = {}}) {
