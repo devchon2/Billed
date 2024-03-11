@@ -62,7 +62,6 @@ export default class NewBill {
       })
       //Modified by RCHON
       .then(({ filePath, id, key }) => {
-        console.log("filePath)", filePath, "id", id, "key", key);
         this.billId = id;
         this.key = key;
         this.path = filePath.replace("public\\", "public/");

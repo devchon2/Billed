@@ -166,7 +166,7 @@ export default class {
       if (bill.status === getStatus(this.index)) {
       $(`#open-bill${bill.id}`).click((e) => this.handleEditTicket(e, bill, bills))
     }})
-    // End of modification (add condition)
+    // End of modification (add conditional selection)
 
     return bills
 
