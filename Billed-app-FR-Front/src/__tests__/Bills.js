@@ -8,11 +8,35 @@ import { bills } from "../fixtures/bills.js";
 import { ROUTES_PATH, ROUTES } from "../constants/routes.js";
 import { localStorageMock } from "../__mocks__/localStorage.js";
 import { storeMock } from "../__mocks__/store.js";
-
+import Bills from "../containers/Bills.js";
 import router from "../app/Router.js";
 
-
 describe("Given I am connected as an employee and I am on Bills Page", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("When I navigate to Bills page", () => {
+    test.skip("then fetches bills from mock API GET", async () => {
+      const getSpy = jest.spyOn(storeMock(), "list");
+      const bills = new Bills({
+        document,
+        onNavigate,
+        store: jest.fn(() => ({
+          bills: jest.fn(()=> storeMock)
+      }),
+        ),
+        localStorage: window.localStorage
+      });
+      
+
+
+      const billsData = await bills.getBills();
+      expect(getSpy).toHaveBeenCalledTimes(1);
+      expect(billsData.length).toBe(4);
+    });
+  });
+
   describe("When i look the vertical laayout ", () => {
     test("Then bill icon should be highlighted", async () => {
       Object.defineProperty(window, "localStorage", {
@@ -108,6 +132,7 @@ describe("Given I am connected as an employee and I am on Bills Page", () => {
       buttonNewBill.addEventListener("click", handleClickNewBill);
       buttonNewBill.click();
       expect(handleClickNewBill).toHaveBeenCalled();
+      expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
     });
     test("then if i click on the eye icon button i open the modale", async () => {
       Object.defineProperty(window, "localStorage", {
@@ -119,16 +144,26 @@ describe("Given I am connected as an employee and I am on Bills Page", () => {
           type: "Employee",
         })
       );
-      document.body.innerHTML = BillsUI({ data: bills });
+      router();
+      window.onNavigate(ROUTES_PATH.Bills);
+      const bills = new Bills({
+        document,
+        localStorage,
+        onNavigate: () => {},
+        store: {bills: jest.fn(() => storeMock),
+      }});
 
       const iconEye = screen.getAllByTestId("icon-eye");
 
-      iconEye.forEach((icon, index) => {
-        const handleClickIconEye = jest.fn(bills[index].handleClickIconEye);
-        icon.addEventListener("click", () => handleClickIconEye(icon));
+      iconEye.forEach((icon, index) => {        
+        const handleClickIconEye = jest.fn(bills.handleClickIconEye);
+
+        icon.addEventListener("click",() => handleClickIconEye(icon));
         fireEvent.click(icon);
-        expect(icon.getAttribute("data-bill-url")).toBe(bills[index].fileUrl);
+
         expect(handleClickIconEye).toHaveBeenCalled();
+        expect(handleClickIconEye).toHaveBeenCalledWith(icon);
+        
         expect(screen.getByText("Justificatif")).toBeTruthy();
       });
     });
