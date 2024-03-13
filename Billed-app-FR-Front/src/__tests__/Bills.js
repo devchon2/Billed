@@ -113,7 +113,7 @@ describe("Given I am connected as an employee and I am on Bills Page", () => {
       expect(screen.getByText("Envoyer une note de frais")).toBeTruthy();
     });
     test("then if i click on the eye icon button i open the modale", async () => {
-      
+
       document.body.innerHTML = BillsUI({ data: bills });
       const onNavigate = jest.fn(() => {});
       new Bills({ document, onNavigate, store: null, localStorage: null });
@@ -136,58 +136,74 @@ describe("Given I am connected as an employee and I am on Bills Page", () => {
     });
   });
 
-  
-  describe("When an error occurs on API", () => {
-    beforeEach(() => {
-      jest.spyOn(mockStore, "bills");
-      Object.defineProperty(window, "localStorage", {
-        value: localStorageMock,
-      });
-      window.localStorage.setItem(
-        "user",
-        JSON.stringify({
-          type: "Employee",
-          email: "a@a",
-        })
-      );
-      const root = document.createElement("div");
-      root.setAttribute("id", "root");
-      document.body.appendChild(root);
-      router();
-    });
-    test("then fetches bills from an API and fails with 404 message error", async () => {
-      
-      window.onNavigate(ROUTES_PATH.Bills);
-            await new Promise(process.nextTick);
-      document.body.innerHTML = BillsUI({ error: "Erreur 404" });
-      const message = await screen.getByText("Erreur 404");
-expect(message).toBeTruthy();
-    });
-
-    test("fetches messages from an API and fails with 500 message error", async () => {
-      window.onNavigate(ROUTES_PATH.Bills);
-            await new Promise(process.nextTick);
-      document.body.innerHTML = BillsUI({ error: "Erreur 500" });
-      const message = await screen.getByText("Erreur 500");
-expect(message).toBeTruthy();
-    });
-  });
 });
 describe("When I navigate to Bills page", () => {
-    beforeEach(() => {
-      Object.defineProperty(window, "localStorage", {
-        value: localStorageMock,
-      });
-      localStorage.setItem("user", JSON.stringify({ type: "employee", email: "employee@employee", password: "employee", status: "connected"}));
+  beforeEach(() => {
+    jest.spyOn(mockStore, "bills");
+    Object.defineProperty(window, "localStorage", {
+      value: localStorageMock,
     });
-    test("then fetches bills from mock API GET", async () => {
-      const root = document.createElement("div")
-      root.setAttribute("id", "root")
-      document.body.append(root)
-      router()
-      window.onNavigate(ROUTES_PATH.Bills)
-      document.body.innerHTML = BillsUI({ data: bills })
-      await waitFor(() => screen.getByText("Mes notes de frais"))
-            })
+    window.localStorage.setItem(
+      "user",
+      JSON.stringify({
+        type: "Employee",
+        email: "a@a",
+      })
+    );
+    const root = document.createElement("div");
+    root.setAttribute("id", "root");
+    document.body.appendChild(root);
+    router();
+  })
+  test("then fetches bills from mock API GET", async () => {
+    const getSpy = jest.spyOn(mockStore,"bills");
+    window.onNavigate(ROUTES_PATH.Bills);
+    document.body.innerHTML = BillsUI({ data: bills });
+    await waitFor(() => {
+      const notes = screen.getByText("Mes notes de frais")
+      expect(notes).toBeTruthy();
+      expect(getSpy).toHaveBeenCalledTimes(1);
+
+      const billsInPage = screen.getAllByTestId("bill-date");
+      expect(billsInPage).toBeTruthy();
+      expect(billsInPage).toHaveLength(4);
+
     
     });
+});
+});
+
+describe("When an error occurs on API", () => {
+  beforeEach(() => {
+    jest.spyOn(mockStore, "bills");
+    Object.defineProperty(window, "localStorage", {
+      value: localStorageMock,
+    });
+    window.localStorage.setItem(
+      "user",
+      JSON.stringify({
+        type: "Employee",
+        email: "a@a",
+      })
+    );
+    const root = document.createElement("div");
+    root.setAttribute("id", "root");
+    document.body.appendChild(root);
+    router();
+  });
+  test("then fetches bills from an API and fails with 404 message error", async () => {
+    window.onNavigate(ROUTES_PATH.Bills);
+    await new Promise(process.nextTick);
+    document.body.innerHTML = BillsUI({ error: "Erreur 404" });
+    const message = await screen.getByText("Erreur 404");
+    expect(message).toBeTruthy();
+  });
+
+  test("fetches messages from an API and fails with 500 message error", async () => {
+    window.onNavigate(ROUTES_PATH.Bills);
+    await new Promise(process.nextTick);
+    document.body.innerHTML = BillsUI({ error: "Erreur 500" });
+    const message = await screen.getByText("Erreur 500");
+    expect(message).toBeTruthy();
+  });
+});
