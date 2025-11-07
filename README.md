@@ -95,7 +95,7 @@ npm run dev
 MIT (voir `LICENSE`).
 
 ## 📫 Contact
-Rachid Chon — `cgpt1euro@rchon-dev.fr`
+Rachid Chon — `rchon@rchon-dev.fr`
 
 ---
 
@@ -179,6 +179,6 @@ npm run dev
 MIT — see `LICENSE`.
 
 ## 📫 Contact
-Rachid Chon — `cgpt1euro@rchon-dev.fr`
+Rachid Chon — `rchon@rchon-dev.fr`
 
 </details>
