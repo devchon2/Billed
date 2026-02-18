@@ -3,3 +3,4 @@ Billed-app-FR-Back/node_modules/
 Billed-app-FR-Front/node_modules
 Billed-app-FR-Front/coverage/
 .idea
+/.agent/

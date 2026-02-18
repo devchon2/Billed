@@ -3,6 +3,7 @@
     "dev": "rsbuild dev --open",
     "build": "rsbuild build",
     "preview": "rsbuild preview",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "test": "jest --coverage --noStackTrace --watchAll --runInBand --detectOpenHandles --silent",
     "testLog": "jest --coverage --watchAll "

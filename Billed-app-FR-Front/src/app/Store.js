@@ -1,3 +1,4 @@
+import mockStore from "../__mocks__/store.js"
 const jsonOrThrowIfError = async (response) => {
   if (!response.ok) throw new Error((await response.json()).message)
   return response.json()
@@ -64,17 +65,17 @@ class ApiEntity {
 
 class Store {
   constructor() {
-    this.api = new Api({ baseUrl: import.meta.env.PUBLIC_API_URL })
+    this.api = new Api({ baseUrl: import.meta.env.PUBLIC_API_URL || 'http://localhost:5678' })
   }
 
-  user = uid => (new ApiEntity({ key: 'users', api: this.api })).select({ selector: uid })
-  users = () => new ApiEntity({ key: 'users', api: this.api })
-  login = (data) => this.api.post({ url: '/auth/login', data, headers: getHeaders({ noAuthorization: true }) })
+  user = uid => (import.meta.env.PUBLIC_USE_MOCKS === 'true' ? mockStore : new ApiEntity({ key: 'users', api: this.api })).select({ selector: uid })
+  users = () => (import.meta.env.PUBLIC_USE_MOCKS === 'true' ? mockStore.users() : new ApiEntity({ key: 'users', api: this.api }))
+  login = (data) => (import.meta.env.PUBLIC_USE_MOCKS === 'true' ? mockStore.login(data) : this.api.post({ url: '/auth/login', data, headers: getHeaders({ noAuthorization: true }) }))
 
   ref = (path) => this.store.doc(path)
 
-  bill = bid => (new ApiEntity({ key: 'bills', api: this.api })).select({ selector: bid })
-  bills = () => new ApiEntity({ key: 'bills', api: this.api })
+  bill = bid => (import.meta.env.PUBLIC_USE_MOCKS === 'true' ? mockStore.bills().select({ selector: bid }) : (new ApiEntity({ key: 'bills', api: this.api })).select({ selector: bid }))
+  bills = () => (import.meta.env.PUBLIC_USE_MOCKS === 'true' ? mockStore.bills() : new ApiEntity({ key: 'bills', api: this.api }))
 }
 
 export default new Store()
