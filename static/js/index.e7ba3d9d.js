@@ -1,4 +1,4 @@
-(()=>{var e={884(){Date.prototype.getWeekNumber=function(){var e=new Date(Date.UTC(this.getFullYear(),this.getMonth(),this.getDate())),t=e.getUTCDay()||7;e.setUTCDate(e.getUTCDate()+4-t);var a=new Date(Date.UTC(e.getUTCFullYear(),0,1));return Math.ceil(((e-a)/864e5+1)/7)}}},t={};(()=>{"use strict";let a={list:()=>Promise.resolve([{id:"47qAXb6fIm2zOKkLzMro",vat:"80",fileUrl:"https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",status:"pending",type:"H\xf4tel et logement",commentary:"s\xe9minaire billed",name:"encore",fileName:"preview-facture-free-201801-pdf-1.jpg",date:"2004-04-04",amount:400,commentAdmin:"ok",email:"a@a",pct:20},{id:"BeKy5Mo4jkmdfPGYpTxZ",vat:"",amount:100,name:"test1",fileName:"1592770761.jpeg",commentary:"plop",pct:20,type:"Transports",email:"a@a",fileUrl:"https://test.storage.tld/v0/b/billable-677b6.a…61.jpeg?alt=media&token=7685cd61-c112-42bc-9929-8a799bb82d8b",date:"2001-01-01",status:"refused",commentAdmin:"en fait non"},{id:"UIUZtnPQvnbFnB0ozvJh",name:"test3",email:"a@a",type:"Services en ligne",vat:"60",pct:20,commentAdmin:"bon bah d'accord",amount:300,status:"accepted",date:"2003-03-03",commentary:"",fileName:"facture-client-php-exportee-dans-document-pdf-enregistre-sur-disque-dur.png",fileUrl:"https://test.storage.tld/v0/b/billable-677b6.a…dur.png?alt=media&token=571d34cb-9c8f-430a-af52-66221cae1da3"},{id:"qcCK3SzECmaZAGRrHjaC",status:"refused",pct:20,amount:200,email:"a@a",name:"test2",vat:"40",fileName:"preview-facture-free-201801-pdf-1.jpg",date:"2002-02-02",commentAdmin:"pas la bonne facture",commentary:"test2",type:"Restaurants et bars",fileUrl:"https://test.storage.tld/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=4df6ed2c-12c8-42a2-b013-346c1346f732"}]),create:e=>Promise.resolve({fileUrl:"https://localhost:3456/images/test.jpg",key:"1234"}),update:e=>Promise.resolve({id:"47qAXb6fIm2zOKkLzMro",vat:"80",fileUrl:"https://firebasestorage.googleapis.com/v0/b/billable-677b6.a…f-1.jpg?alt=media&token=c1640e12-a24b-4b11-ae52-529112e9602a",status:"pending",type:"H\xf4tel et logement",commentary:"s\xe9minaire billed",name:"encore",fileName:"preview-facture-free-201801-pdf-1.jpg",date:"2004-04-04",amount:400,commentAdmin:"ok",email:"a@a",pct:20})},i={bills:()=>a,login:e=>Promise.resolve({jwt:"mocked-jwt"}),users:()=>({create:()=>Promise.resolve({}),select:()=>Promise.resolve({}),list:()=>Promise.resolve([])}),user:e=>Promise.resolve({})};function l(e,t,a){return t in e?Object.defineProperty(e,t,{value:a,enumerable:!0,configurable:!0,writable:!0}):e[t]=a,e}let s=()=>`
+(()=>{var t={884(){Date.prototype.getWeekNumber=function(){var t=new Date(Date.UTC(this.getFullYear(),this.getMonth(),this.getDate())),e=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-e);var a=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-a)/864e5+1)/7)}}},e={};(()=>{"use strict";function a(t,e,a){return e in t?Object.defineProperty(t,e,{value:a,enumerable:!0,configurable:!0,writable:!0}):t[e]=a,t}let i=async t=>{if(!t.ok)throw Error((await t.json()).message);return t.json()};class l{async get(t){let{url:e,headers:a}=t;return i(await fetch(`${this.baseUrl}${e}`,{headers:a,method:"GET"}))}async post(t){let{url:e,data:a,headers:l}=t;return i(await fetch(`${this.baseUrl}${e}`,{headers:l,method:"POST",body:a}))}async delete(t){let{url:e,headers:a}=t;return i(await fetch(`${this.baseUrl}${e}`,{headers:a,method:"DELETE"}))}async patch(t){let{url:e,data:a,headers:l}=t;return i(await fetch(`${this.baseUrl}${e}`,{headers:l,method:"PATCH",body:a}))}constructor({baseUrl:t}){this.baseUrl=t}}let s=t=>{let e={};t.noContentType||(e["Content-Type"]="application/json");let a=localStorage.getItem("jwt");return a&&!t.noAuthorization&&(e.Authorization=`Bearer ${a}`),{...e,...t}};class o{async select(t){let{selector:e,headers:a={}}=t;return await this.api.get({url:`/${this.key}/${e}`,headers:s(a)})}async list(){let{headers:t={}}=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};return await this.api.get({url:`/${this.key}`,headers:s(t)})}async update(t){let{data:e,selector:a,headers:i={}}=t;return await this.api.patch({url:`/${this.key}/${a}`,headers:s(i),data:e})}async create(t){let{data:e,headers:a={}}=t;return await this.api.post({url:`/${this.key}`,headers:s(a),data:e})}async delete(t){let{selector:e,headers:a={}}=t;return await this.api.delete({url:`/${this.key}/${e}`,headers:s(a)})}constructor({key:t,api:e}){this.key=t,this.api=e}}let n=new class{constructor(){a(this,"user",t=>new o({key:"users",api:this.api}).select({selector:t})),a(this,"users",()=>new o({key:"users",api:this.api})),a(this,"login",t=>this.api.post({url:"/auth/login",data:t,headers:s({noAuthorization:!0})})),a(this,"ref",t=>this.store.doc(t)),a(this,"bill",t=>new o({key:"bills",api:this.api}).select({selector:t})),a(this,"bills",()=>new o({key:"bills",api:this.api})),this.api=new l({baseUrl:"http://localhost:5678"})}},d=()=>`
       <div class="page-div">
         <div class="row">
           <div class="title-container"> 
@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-  `,o=`
+  `,r=`
   <svg xmlns="http://www.w3.org/2000/svg"
       width="0.2in" height="0.2in"
       viewBox="0 0 18 18">
@@ -83,7 +83,7 @@
               10.00,9.00 10.00,1.00 10.00,1.00
               10.00,0.45 10.45,0.00 11.00,0.00 Z" />
   </svg>
-`,d=`
+`,c=`
 <svg xmlns="http://www.w3.org/2000/svg"
      width="0.222222in" height="0.177778in"
      viewBox="0 0 20 16">
@@ -108,7 +108,7 @@
              2.00,7.00 8.35,11.45 8.35,11.45
              9.34,12.14 10.66,12.14 11.65,11.45 Z" />
 </svg>
-`,n=`
+`,h=`
 <svg xmlns="http://www.w3.org/2000/svg"
      width="0.255556in" height="0.255556in"
      viewBox="0 0 23 23">
@@ -139,43 +139,43 @@
              22.64,14.80 23.00,13.15 23.00,11.48
              23.00,8.13 21.52,4.94 18.95,2.77 Z" />
 </svg>
-`,r=e=>{let t;return("string"==typeof(t=JSON.parse(localStorage.getItem("user")))&&(t=JSON.parse(t)),t&&"Employee"===t.type)?`
-        <div class='vertical-navbar' style='height: ${e}vh;'>
+`,u=t=>{let e;return("string"==typeof(e=JSON.parse(localStorage.getItem("user")))&&(e=JSON.parse(e)),e&&"Employee"===e.type)?`
+        <div class='vertical-navbar' style='height: ${t}vh;'>
           <div class='layout-title'> Billed </div>
           <div id='layout-icon1' data-testid="icon-window">
-            ${o}
+            ${r}
           </div>
           <div id='layout-icon2' data-testid="icon-mail">
-            ${d}
+            ${c}
           </div>
           <div id='layout-disconnect'>
-            ${n}
+            ${h}
           </div>
       </div>
         `:`
-        <div class='vertical-navbar' style='height: ${e}vh;'>
+        <div class='vertical-navbar' style='height: ${t}vh;'>
           <div class='layout-title'> Billed </div>
             <div id='layout-disconnect' data-testid='layout-disconnect'>
-              ${n}
+              ${h}
             </div>
           </div>
-        `},c=e=>`
+        `},m=t=>`
     <div class='layout'>
-      ${r()}
+      ${u()}
       <div class='content'>
         <div class='content-header'>
           <div class='content-title'> Erreur </div>
         </div>
         <div data-testid="error-message">
-          ${e||""}
+          ${t||""}
         </div>
-    </div>`,m=()=>`
+    </div>`,p=()=>`
     <div class='layout'>
-      ${r()}
+      ${u()}
       <div class='content' id='loading'>
         Loading...
       </div>
-    </div>`,h=`<svg xmlns="http://www.w3.org/2000/svg"
+    </div>`,v=`<svg xmlns="http://www.w3.org/2000/svg"
 width="0.244444in" height="0.166667in"
 viewBox="0 0 22 15">
 <path id="Imported Path"
@@ -195,9 +195,9 @@ viewBox="0 0 22 15">
         8.00,9.16 9.34,10.50 11.00,10.50
         12.66,10.50 14.00,9.16 14.00,7.50
         14.00,5.84 12.66,4.50 11.00,4.50 Z" />
-</svg>`,u=e=>{let t=new Date(null!==e?e:"1970-01-01").toLocaleDateString("fr-FR",{year:"numeric",month:"short",day:"numeric"}).split(" "),a=t[0].padStart(2,"0"),i=t[1],l=t[2].padStart(4,"0"),s=i.charAt(0).toUpperCase()+i.slice(1);return`${a} ${s} ${l}`},p=e=>{let t=new Date(e),a=new Intl.DateTimeFormat("us",{year:"numeric"}).format(t),i=new Intl.DateTimeFormat("us",{month:"2-digit"}).format(t),l=new Intl.DateTimeFormat("us",{day:"2-digit"}).format(t);return Number(`${a}${i}${l}`)},v=e=>{switch(e){case"pending":return"En attente";case"accepted":return"Accept\xe9";case"refused":return"Refused"}};function b(e){let{data:t,loading:a,error:i}=e,l=t&&t.length>0?t:[];return a?m():i?c(i):`
+</svg>`,b=t=>{let e=new Date(null!==t?t:"1970-01-01").toLocaleDateString("fr-FR",{year:"numeric",month:"short",day:"numeric"}).split(" "),a=e[0].padStart(2,"0"),i=e[1],l=e[2].padStart(4,"0"),s=i.charAt(0).toUpperCase()+i.slice(1);return`${a} ${s} ${l}`},g=t=>{let e=new Date(t),a=new Intl.DateTimeFormat("us",{year:"numeric"}).format(e),i=new Intl.DateTimeFormat("us",{month:"2-digit"}).format(e),l=new Intl.DateTimeFormat("us",{day:"2-digit"}).format(e);return Number(`${a}${i}${l}`)},f=t=>{switch(t){case"pending":return"En attente";case"accepted":return"Accept\xe9";case"refused":return"Refused"}};function w(t){let{data:e,loading:a,error:i}=t,l=e&&e.length>0?e:[];return a?p():i?m(i):`
     <div class='layout'>
-      ${r(120)}
+      ${u(120)}
       <div class='content'>
         <div class='content-header'>
           <div class='content-title'> Mes notes de frais </div>
@@ -216,17 +216,17 @@ viewBox="0 0 22 15">
               </tr>
           </thead>
           <tbody data-testid="tbody">
-            ${l.sort((e,t)=>p(t.date)-p(e.date)).map(e=>{let t;return`
+            ${l.sort((t,e)=>g(e.date)-g(t.date)).map(t=>{let e;return`
     <tr>
-      <td>${e.type}</td>
-      <td>${e.name}</td>
-      <td data-testid='bill-date'>${u(e.date)}</td>
-      <td>${e.amount} €</td>
-      <td>${e.status}</td>
+      <td>${t.type}</td>
+      <td>${t.name}</td>
+      <td data-testid='bill-date'>${b(t.date)}</td>
+      <td>${t.amount} €</td>
+      <td>${t.status}</td>
       <td >
-        ${t=e.fileUrl,`<div class="icon-actions">
-      <div id="eye" data-testid="icon-eye" data-bill-url=${t}>
-      ${h}
+        ${e=t.fileUrl,`<div class="icon-actions">
+      <div id="eye" data-testid="icon-eye" data-bill-url=${e}>
+      ${v}
       </div>
     </div>
     `}
@@ -252,7 +252,7 @@ viewBox="0 0 22 15">
         </div>
       </div>
     </div>
-  `}let g=`
+  `}let y=`
   <svg xmlns="http://www.w3.org/2000/svg"
   width="2.57778in" height="2.86667in"
   viewBox="0 0 232 258">
@@ -306,7 +306,7 @@ viewBox="0 0 22 15">
           193.00,90.50 39.00,90.50 39.00,90.50
           39.00,90.50 39.00,64.83 39.00,64.83 Z" />
   </svg>
-`,f=`
+`,x=`
 <svg xmlns="http://www.w3.org/2000/svg"
      width="0.2in" height="0.222222in"
      viewBox="0 0 18 20">
@@ -345,7 +345,7 @@ viewBox="0 0 22 15">
              9.00,15.00 4.00,15.00 4.00,15.00
              4.00,15.00 4.00,10.00 4.00,10.00 Z" />
 </svg>
-`,w=`
+`,S=`
 <svg xmlns="http://www.w3.org/2000/svg"
 width="0.2in" height="0.2in"
 viewBox="0 0 18 18">
@@ -379,7 +379,7 @@ viewBox="0 0 18 18">
         18.00,15.70 16.22,13.93 16.22,13.93
         15.09,14.91 13.62,15.50 12.00,15.50 Z" />
 </svg>
-`,y=`
+`,k=`
 <svg xmlns="http://www.w3.org/2000/svg"
      width="0.177778in" height="0.2in"
      viewBox="0 0 16 18">
@@ -433,7 +433,7 @@ viewBox="0 0 18 18">
              11.54,2.11 13.31,3.00 13.31,3.00
              13.31,3.00 5.32,15.78 5.32,15.78 Z" />
 </svg>
-`,x=`<svg xmlns="http://www.w3.org/2000/svg"
+`,C=`<svg xmlns="http://www.w3.org/2000/svg"
 width="0.244444in" height="0.166667in"
 viewBox="0 0 22 15">
 <path id="Imported Path"
@@ -454,43 +454,43 @@ viewBox="0 0 22 15">
         12.66,10.50 14.00,9.16 14.00,7.50
         14.00,5.84 12.66,4.50 11.00,4.50 Z" />
 </svg>
-`,S=["cedric.hiely@billed.com","christian.saluzzo@billed.com","jean.limbert@billed.com","joanna.binet@billed.com"];class k{constructor({document:e,onNavigate:t,localStorage:a}){l(this,"handleClick",e=>{e.preventDefault(),this.localStorage.clear(),this.onNavigate(I.Login)}),this.document=e,this.localStorage=a,this.onNavigate=t,$("#layout-disconnect").click(this.handleClick)}}let C=(e,t)=>e&&e.length?e.filter(e=>{let a;if("u">typeof jest)a=e.status===t;else{let i=JSON.parse(localStorage.getItem("user")).email;a=e.status===t&&![...S,i].includes(e.email)}return a}):[],L=e=>{switch(e){case 1:return"pending";case 2:return"accepted";case 3:return"refused"}};class M{handleEditTicket(e,t,a){if((void 0===this.counter||this.id!==t.id)&&(this.counter=0),(void 0===this.id||this.id!==t.id)&&(this.id=t.id),this.counter%2==0)a.forEach(e=>{$(`#open-bill${e.id}`).css({background:"#0D5AE5"})}),$(`#open-bill${t.id}`).css({background:"#2A2B35"}),$(".dashboard-right-container div").html(`
+`,E=["cedric.hiely@billed.com","christian.saluzzo@billed.com","jean.limbert@billed.com","joanna.binet@billed.com"];class L{constructor({document:t,onNavigate:e,localStorage:i}){a(this,"handleClick",t=>{t.preventDefault(),this.localStorage.clear(),this.onNavigate(A.Login)}),this.document=t,this.localStorage=i,this.onNavigate=e,$("#layout-disconnect").click(this.handleClick)}}let M=(t,e)=>t&&t.length?t.filter(t=>{let a;if("u">typeof jest)a=t.status===e;else{let i=JSON.parse(localStorage.getItem("user")).email;a=t.status===e&&![...E,i].includes(t.email)}return a}):[],N=t=>{switch(t){case 1:return"pending";case 2:return"accepted";case 3:return"refused"}};class T{handleEditTicket(t,e,a){if((void 0===this.counter||this.id!==e.id)&&(this.counter=0),(void 0===this.id||this.id!==e.id)&&(this.id=e.id),this.counter%2==0)a.forEach(t=>{$(`#open-bill${t.id}`).css({background:"#0D5AE5"})}),$(`#open-bill${e.id}`).css({background:"#2A2B35"}),$(".dashboard-right-container div").html(`
     <div class="container dashboard-form" data-testid="dashboard-form">
       <div class="row">
         <div class="col-sm" id="dashboard-form-col1">
           <label for="expense-type" class="bold-label">Type de d\xe9pense</label>
-          <div class='input-field'> ${t.type} </div>
+          <div class='input-field'> ${e.type} </div>
           <label for="expense-name" class="bold-label">Nom de la d\xe9pense</label>
-          <div class='input-field'> ${t.name} </div>
+          <div class='input-field'> ${e.name} </div>
           <label for="datepicker" class="bold-label">Date</label>
           <div class='input-field input-flex'>
-            <span>${u(t.date)}</span>
-            <span> ${f} </span>
+            <span>${b(e.date)}</span>
+            <span> ${x} </span>
           </div>
         </div>
         <div class="col-sm" id="dashboard-form-col2">
           <label for="commentary" class="bold-label">Commentaire</label>
-          <div class='textarea-field' style="height: 300px;"> ${t.commentary} </div>
+          <div class='textarea-field' style="height: 300px;"> ${e.commentary} </div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm">
           <label for="amount" class="bold-label">Montant TTC </label>
           <div class='input-field input-flex'>
-            <span data-testid="amount-d">${t.amount}</span>
-            <span> ${w} </span>
+            <span data-testid="amount-d">${e.amount}</span>
+            <span> ${S} </span>
           </div>
         </div>
         <div class="col-sm">
           <label for="vat" class="bold-label">TVA</label>
           <div id='vat-flex-container'>
             <div class='input-field input-flex vat-flex'>
-              <span>${t.vat}</span>
-              <span> ${w} </span>
+              <span>${e.vat}</span>
+              <span> ${S} </span>
             </div>
             <div class='input-field input-flex vat-flex'>
-              <span>${t.pct}</span>
-              <span> ${y} </span>
+              <span>${e.pct}</span>
+              <span> ${k} </span>
             </div>
           </div>
         </div>
@@ -499,15 +499,15 @@ viewBox="0 0 22 15">
         <div class="col-sm">
           <label for="file" class="bold-label">Justificatif</label>
             <div class='input-field input-flex file-flex'>
-            <span id="file-name-admin">${t.fileName}</span>
+            <span id="file-name-admin">${e.fileName}</span>
             <div class='icons-container'>
-              <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${t.fileUrl}"> ${x} </span>
+              <span id="icon-eye-d" data-testid="icon-eye-d" data-bill-url="${e.fileUrl}"> ${C} </span>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
-       ${"pending"===t.status?`
+       ${"pending"===e.status?`
         <div class="col-sm">
           <label for="commentary-admin" class="bold-label">Ajouter un commentaire</label>
           <textarea id="commentary2" class="form-control blue-border" data-testid="commentary2" rows="5"></textarea>
@@ -515,12 +515,12 @@ viewBox="0 0 22 15">
        `:`
         <div class="col-sm">
           <label for="commentary-admin" class="bold-label">Votre commentaire</label>
-          <div class='input-field'> ${t.commentAdmin} </div>
+          <div class='input-field'> ${e.commentAdmin} </div>
         </div>
        `}
       </div>
       <div class="row">
-      ${"pending"===t.status?`
+      ${"pending"===e.status?`
       <div class="col-sm buttons-flex" style="width: 300px;" >
         <button type="submit" id='btn-refuse-bill' data-testid='btn-refuse-bill-d' class="btn btn-primary">Refuser</button>
         <button type="submit" id='btn-accept-bill' data-testid='btn-accept-bill-d' class="btn btn-primary">Accepter</button>
@@ -544,24 +544,24 @@ viewBox="0 0 22 15">
   </div>
   
     </div>
-  `),$(".vertical-navbar").css({height:"150vh"}),this.counter++;else $(`#open-bill${t.id}`).css({background:"#0D5AE5"}),$(".dashboard-right-container div").html(`
-        <div id="big-billed-icon" data-testid="big-billed-icon"> ${g} </div>
-      `),$(".vertical-navbar").css({height:"120vh"}),this.counter++;$("#icon-eye-d").click(this.handleClickIconEye),$("#btn-accept-bill").click(e=>this.handleAcceptSubmit(e,t)),$("#btn-refuse-bill").click(e=>this.handleRefuseSubmit(e,t))}handleShowTickets(e,t,a){if((void 0===this.counter||this.index!==a)&&(this.counter=0),(void 0===this.index||this.index!==a)&&(this.index=a),this.counter%2==0){let e;$(`#arrow-icon${this.index}`).css({transform:"rotate(0deg)"}),$(`#status-bills-container${this.index}`).html((e=C(t,L(this.index)))&&e.length?e.map(e=>{let t,a,i;return a=(t=e.email.split("@")[0]).includes(".")?t.split(".")[0]:"",i=t.includes(".")?t.split(".")[1]:t,`
-    <div class='bill-card' id='open-bill${e.id}' data-testid='open-bill${e.id}'>
+  `),$(".vertical-navbar").css({height:"150vh"}),this.counter++;else $(`#open-bill${e.id}`).css({background:"#0D5AE5"}),$(".dashboard-right-container div").html(`
+        <div id="big-billed-icon" data-testid="big-billed-icon"> ${y} </div>
+      `),$(".vertical-navbar").css({height:"120vh"}),this.counter++;$("#icon-eye-d").click(this.handleClickIconEye),$("#btn-accept-bill").click(t=>this.handleAcceptSubmit(t,e)),$("#btn-refuse-bill").click(t=>this.handleRefuseSubmit(t,e))}handleShowTickets(t,e,a){if((void 0===this.counter||this.index!==a)&&(this.counter=0),(void 0===this.index||this.index!==a)&&(this.index=a),this.counter%2==0){let t;$(`#arrow-icon${this.index}`).css({transform:"rotate(0deg)"}),$(`#status-bills-container${this.index}`).html((t=M(e,N(this.index)))&&t.length?t.map(t=>{let e,a,i;return a=(e=t.email.split("@")[0]).includes(".")?e.split(".")[0]:"",i=e.includes(".")?e.split(".")[1]:e,`
+    <div class='bill-card' id='open-bill${t.id}' data-testid='open-bill${t.id}'>
       <div class='bill-card-name-container'>
         <div class='bill-card-name'> ${a} ${i} </div>
         <span class='bill-card-grey'> ... </span>
       </div>
       <div class='name-price-container'>
-        <span> ${e.name} </span>
-        <span> ${e.amount} € </span>
+        <span> ${t.name} </span>
+        <span> ${t.amount} € </span>
       </div>
       <div class='date-type-container'>
-        <span> ${u(e.date)} </span>
-        <span> ${e.type} </span>
+        <span> ${b(t.date)} </span>
+        <span> ${t.type} </span>
       </div>
     </div>
-  `}).join(""):""),this.counter++}else $(`#arrow-icon${this.index}`).css({transform:"rotate(90deg)"}),$(`#status-bills-container${this.index}`).html(""),this.counter++;return t.forEach(e=>{e.status===L(this.index)&&$(`#open-bill${e.id}`).click(a=>this.handleEditTicket(a,e,t))}),t}constructor({document:e,onNavigate:t,store:a,bills:i,localStorage:s}){l(this,"handleClickIconEye",()=>{let e=$("#icon-eye-d").attr("data-bill-url"),t=Math.floor(.8*$("#modaleFileAdmin1").width());$("#modaleFileAdmin1").find(".modal-body").html(`<div style='text-align: center;'><img width=${t} src=${e} alt="Bill"/></div>`),"function"==typeof $("#modaleFileAdmin1").modal&&$("#modaleFileAdmin1").modal("show")}),l(this,"handleAcceptSubmit",(e,t)=>{let a={...t,status:"accepted",commentAdmin:$("#commentary2").val()};this.updateBill(a),this.onNavigate(I.Dashboard)}),l(this,"handleRefuseSubmit",(e,t)=>{let a={...t,status:"refused",commentAdmin:$("#commentary2").val()};this.updateBill(a),this.onNavigate(I.Dashboard)}),l(this,"getBillsAllUsers",()=>{if(this.store)return this.store.bills().list().then(e=>e.map(e=>({id:e.id,...e,date:e.date,status:e.status}))).catch(e=>{throw e})}),l(this,"updateBill",e=>{if(this.store)return this.store.bills().update({data:JSON.stringify(e),selector:e.id}).then(e=>e).catch(console.log)}),this.document=e,this.onNavigate=t,this.store=a,$("#arrow-icon1").click(e=>this.handleShowTickets(e,i,1)),$("#arrow-icon2").click(e=>this.handleShowTickets(e,i,2)),$("#arrow-icon3").click(e=>this.handleShowTickets(e,i,3)),new k({localStorage:s,onNavigate:t})}}let N=`
+  `}).join(""):""),this.counter++}else $(`#arrow-icon${this.index}`).css({transform:"rotate(90deg)"}),$(`#status-bills-container${this.index}`).html(""),this.counter++;return e.forEach(t=>{t.status===N(this.index)&&$(`#open-bill${t.id}`).click(a=>this.handleEditTicket(a,t,e))}),e}constructor({document:t,onNavigate:e,store:i,bills:l,localStorage:s}){a(this,"handleClickIconEye",()=>{let t=$("#icon-eye-d").attr("data-bill-url"),e=Math.floor(.8*$("#modaleFileAdmin1").width());$("#modaleFileAdmin1").find(".modal-body").html(`<div style='text-align: center;'><img width=${e} src=${t} alt="Bill"/></div>`),"function"==typeof $("#modaleFileAdmin1").modal&&$("#modaleFileAdmin1").modal("show")}),a(this,"handleAcceptSubmit",(t,e)=>{let a={...e,status:"accepted",commentAdmin:$("#commentary2").val()};this.updateBill(a),this.onNavigate(A.Dashboard)}),a(this,"handleRefuseSubmit",(t,e)=>{let a={...e,status:"refused",commentAdmin:$("#commentary2").val()};this.updateBill(a),this.onNavigate(A.Dashboard)}),a(this,"getBillsAllUsers",()=>{if(this.store)return this.store.bills().list().then(t=>t.map(t=>({id:t.id,...t,date:t.date,status:t.status}))).catch(t=>{throw t})}),a(this,"updateBill",t=>{if(this.store)return this.store.bills().update({data:JSON.stringify(t),selector:t.id}).then(t=>t).catch(console.log)}),this.document=t,this.onNavigate=e,this.store=i,$("#arrow-icon1").click(t=>this.handleShowTickets(t,l,1)),$("#arrow-icon2").click(t=>this.handleShowTickets(t,l,2)),$("#arrow-icon3").click(t=>this.handleShowTickets(t,l,3)),new L({localStorage:s,onNavigate:e})}}let B=`
   <svg xmlns="http://www.w3.org/2000/svg"
   width="0.18in" height="0.12in"
   viewBox="0 0 16 11">
@@ -575,28 +575,28 @@ viewBox="0 0 22 15">
             8.00,10.33 16.00,2.33 16.00,2.33
             16.00,2.33 14.12,0.45 14.12,0.45 Z" />
   </svg>
-`,E=e=>{let{data:t,loading:a,error:i}=e;return a?m():i?c(i):`
+`,I=t=>{let{data:e,loading:a,error:i}=t;return a?p():i?m(i):`
     <div class='layout '>
-      ${r(120)}
+      ${u(120)}
       <div class='dashboard-content' data-testid='dashboard-content'>
         <div class='bills-feed'>
           <div class='status-bills-header'>
-            <h3> En attente (${C(t&&t.bills,"pending").length}) </h3>
-            <span class='arrow-icon' id='arrow-icon1' data-testid='arrow-icon1'>${N}</span>
+            <h3> En attente (${M(e&&e.bills,"pending").length}) </h3>
+            <span class='arrow-icon' id='arrow-icon1' data-testid='arrow-icon1'>${B}</span>
           </div>
           <div class='status-bills-container' id='status-bills-container1'>
           </div>
           
             <div class='status-bills-header' style='margin-top: 20px;'>
-              <h3> Valid\xe9 (${C(t&&t.bills,"accepted").length}) </h3>
-              <span class='arrow-icon' id='arrow-icon2' data-testid='arrow-icon2'>${N}</span>
+              <h3> Valid\xe9 (${M(e&&e.bills,"accepted").length}) </h3>
+              <span class='arrow-icon' id='arrow-icon2' data-testid='arrow-icon2'>${B}</span>
             </div>
             <div class='status-bills-container' id='status-bills-container2'>
             </div>
 
             <div class='status-bills-header' style='margin-top: 20px;'>
-              <h3> Refus\xe9 (${C(t&&t.bills,"refused").length}) </h3>
-              <span class='arrow-icon' id='arrow-icon3' data-testid='arrow-icon3'>${N}</span>
+              <h3> Refus\xe9 (${M(e&&e.bills,"refused").length}) </h3>
+              <span class='arrow-icon' id='arrow-icon3' data-testid='arrow-icon3'>${B}</span>
             </div>
             <div class='status-bills-container' id='status-bills-container3'>
             </div>
@@ -604,11 +604,11 @@ viewBox="0 0 22 15">
         </div>
         <div class="dashboard-right-container">
           <h3> Validations </h3>
-          <div><div id="big-billed-icon" data-testid="big-billed-icon"> ${g} </div></div>
+          <div><div id="big-billed-icon" data-testid="big-billed-icon"> ${y} </div></div>
       </div>
-    </div>`},I={Login:"/",Bills:"#employee/bills",NewBill:"#employee/bill/new",Dashboard:"#admin/dashboard"},B=e=>{let{pathname:t,data:a,error:i,loading:l}=e;switch(t){case I.Login:return s({data:a,error:i,loading:l});case I.Bills:return b({data:a,error:i,loading:l});case I.NewBill:return`
+    </div>`},A={Login:"/",Bills:"#employee/bills",NewBill:"#employee/bill/new",Dashboard:"#admin/dashboard"},D=t=>{let{pathname:e,data:a,error:i,loading:l}=t;switch(e){case A.Login:return d({data:a,error:i,loading:l});case A.Bills:return w({data:a,error:i,loading:l});case A.NewBill:return`
     <div class='layout'>
-      ${r(120)}
+      ${u(120)}
       <div class='content'>
         <div class='content-header'>
           <div class='content-title'> Envoyer une note de frais </div>
@@ -674,4 +674,4 @@ viewBox="0 0 22 15">
         </div>
       </div>
     </div>
-  `;case I.Dashboard:return E({data:a,error:i,loading:l});default:return s({data:a,error:i,loading:l})}},T="";class A{constructor({document:e,localStorage:t,onNavigate:a,PREVIOUS_LOCATION:i,store:s}){l(this,"handleSubmitEmployee",e=>{e.preventDefault();let t={type:"Employee",email:e.target.querySelector('input[data-testid="employee-email-input"]').value,password:e.target.querySelector('input[data-testid="employee-password-input"]').value,status:"connected"};this.localStorage.setItem("user",JSON.stringify(t)),this.login(t).catch(e=>this.createUser(t)).then(()=>{this.onNavigate(I.Bills),this.PREVIOUS_LOCATION=I.Bills,T=this.PREVIOUS_LOCATION,this.document.body.style.backgroundColor="#fff"})}),l(this,"handleSubmitAdmin",e=>{e.preventDefault();let t={type:"Admin",email:e.target.querySelector('input[data-testid="admin-email-input"]').value,password:e.target.querySelector('input[data-testid="admin-password-input"]').value,status:"connected"};this.localStorage.setItem("user",JSON.stringify(t)),this.login(t).catch(e=>this.createUser(t)).then(()=>{this.onNavigate(I.Dashboard),this.PREVIOUS_LOCATION=I.Dashboard,T=this.PREVIOUS_LOCATION,document.body.style.backgroundColor="#fff"})}),l(this,"login",e=>this.store?this.store.login(JSON.stringify({email:e.email,password:e.password})).then(e=>{let{jwt:t}=e;localStorage.setItem("jwt",t)}):null),l(this,"createUser",e=>this.store?this.store.users().create({data:JSON.stringify({type:e.type,name:e.email.split("@")[0],email:e.email,password:e.password})}).then(()=>(console.log(`User with ${e.email} is created`),this.login(e))):null),this.document=e,this.localStorage=t,this.onNavigate=a,this.PREVIOUS_LOCATION=i,this.store=s,this.document.querySelector('form[data-testid="form-employee"]').addEventListener("submit",this.handleSubmitEmployee),this.document.querySelector('form[data-testid="form-admin"]').addEventListener("submit",this.handleSubmitAdmin)}}class D{constructor({document:e,onNavigate:t,store:a,localStorage:i}){l(this,"handleClickNewBill",()=>{this.onNavigate(I.NewBill)}),l(this,"handleClickIconEye",e=>{let t=e.getAttribute("data-bill-url"),a=Math.floor(.5*$("#modaleFile").width());$("#modaleFile").find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${a} src=${t} alt="Bill" /></div>`),$("#modaleFile").modal("show")}),l(this,"getBills",()=>{if(this.store)return this.store.bills().list().then(e=>e.map(e=>{try{return{...e,date:u(e.date),status:v(e.status)}}catch(t){return console.log(t,"for",e),{...e,date:e.date,status:v(e.status)}}}))}),this.document=e,this.onNavigate=t,this.store=a;const s=e.querySelector('button[data-testid="btn-new-bill"]');s&&s.addEventListener("click",this.handleClickNewBill);const o=e.querySelectorAll('div[data-testid="icon-eye"]');o&&o.forEach(e=>{e.addEventListener("click",()=>this.handleClickIconEye(e))}),new k({document:e,localStorage:i,onNavigate:t})}}class O{constructor({document:e,onNavigate:t,store:a,localStorage:i}){l(this,"handleChangeFile",e=>{e.preventDefault();let t=this.document.querySelector('input[data-testid="file"]'),a=t.files[0],i=a.name;if(!["image/png","image/jpg","image/jpeg","image/gif"].includes(a.type)){t.files=null,t.value=null,a=void 0,i=void 0,alert("Mauvais format de fichier! \n Seuls les fichiers .jpg, .jpeg, .png et .gif sont accept\xe9s");return}let l=new FormData;l.append("file",a),l.append("email",this.email),this.store.bills().create({data:l,headers:{noContentType:!0}}).then(e=>{let{filePath:t,id:a,key:l}=e;this.billId=a,this.key=l,this.path=t.replace("public\\","public/"),this.fileName=i}).catch(e=>console.error(e))}),l(this,"handleSubmit",e=>{e.preventDefault();let t=this.document.querySelector('form[data-testid="form-new-bill"]'),a=`${t.querySelector('select[data-testid="expense-type"]').value}`,i=`${t.querySelector('input[data-testid="expense-name"]').value}`,l=parseInt(t.querySelector('input[data-testid="amount"]').value)||0,s=t.querySelector('input[data-testid="datepicker"]').value.toString(),o=`${t.querySelector('input[data-testid="vat"]').value.toString()||"0"}`,d=parseInt(t.querySelector('input[data-testid="pct"]').value)||20,n=`${t.querySelector('textarea[data-testid="commentary"]').value}`,r={name:i,type:a,email:this.email,date:s,vat:o,pct:d,commentary:n,status:"pending",amount:l,fileName:this.fileName,fileUrl:this.path};this.updateBill(r)}),l(this,"updateBill",e=>{this.store&&this.store.bills().update({data:JSON.stringify(e),selector:this.key}).then(()=>{this.onNavigate(I.Bills)}).catch(e=>console.error(e))}),this.document=e,this.onNavigate=t,this.store=a,this.document.querySelector('form[data-testid="form-new-bill"]').addEventListener("submit",this.handleSubmit),this.document.querySelector('input[data-testid="file"]').addEventListener("change",this.handleChangeFile),this.path=null,this.user=JSON.parse(i.getItem("user")),this.email=this.user.email,new k({document:e,localStorage:i,onNavigate:t})}}!function a(i){var l=t[i];if(void 0!==l)return l.exports;var s=t[i]={exports:{}};return e[i](s,s.exports,a),s.exports}(884),(()=>{let e=()=>{let e=window.location.pathname,t="/Billed/";return e===t||e===t.slice(0,-1)?"/":e},t=document.getElementById("root");if(t.innerHTML=B({pathname:e()}),window.onNavigate=e=>{let a="/"===e?"/Billed/":e;if(window.history.pushState({},e,window.location.origin+a),e===I.Login)t.innerHTML=B({pathname:e}),document.body.style.backgroundColor="#0E5AE5",new A({document,localStorage,onNavigate,PREVIOUS_LOCATION:T,store:i});else if(e===I.Bills){t.innerHTML=B({pathname:e,loading:!0});let a=document.getElementById("layout-icon1"),l=document.getElementById("layout-icon2");a.classList.add("active-icon"),l.classList.remove("active-icon"),new D({document,onNavigate,store:i,localStorage}).getBills().then(e=>{t.innerHTML=b({data:e});let a=document.getElementById("layout-icon1"),l=document.getElementById("layout-icon2");a.classList.add("active-icon"),l.classList.remove("active-icon"),new D({document,onNavigate,store:i,localStorage})}).catch(a=>{t.innerHTML=B({pathname:e,error:a})})}else if(e===I.NewBill){t.innerHTML=B({pathname:e,loading:!0}),new O({document,onNavigate,store:i,localStorage});let a=document.getElementById("layout-icon1"),l=document.getElementById("layout-icon2");a.classList.remove("active-icon"),l.classList.add("active-icon")}else e===I.Dashboard&&(t.innerHTML=B({pathname:e,loading:!0}),new M({document,onNavigate,store:i,bills:[],localStorage}).getBillsAllUsers().then(e=>{t.innerHTML=E({data:{bills:e}}),new M({document,onNavigate,store:i,bills:e,localStorage})}).catch(a=>{t.innerHTML=B({pathname:e,error:a})}))},window.onpopstate=a=>{a.preventDefault();let i=JSON.parse(localStorage.getItem("user"));"/"!==e()||i?i&&onNavigate(T):(document.body.style.backgroundColor="#0E5AE5",t.innerHTML=B({pathname:e()}))},"/"===e()&&""===window.location.hash)new A({document,localStorage,onNavigate,PREVIOUS_LOCATION:T,store:i}),document.body.style.backgroundColor="#0E5AE5";else if(""!==window.location.hash)if(window.location.hash===I.Bills){t.innerHTML=B({pathname:window.location.hash,loading:!0});let e=document.getElementById("layout-icon1"),a=document.getElementById("layout-icon2");e.classList.add("active-icon"),a.classList.remove("active-icon"),new D({document,onNavigate,store:i,localStorage}).getBills().then(e=>{t.innerHTML=b({data:e});let a=document.getElementById("layout-icon1"),l=document.getElementById("layout-icon2");a.classList.add("active-icon"),l.classList.remove("active-icon"),new D({document,onNavigate,store:i,localStorage})}).catch(e=>{t.innerHTML=B({pathname:window.location.hash,error:e})})}else if(window.location.hash===I.NewBill){t.innerHTML=B({pathname:window.location.hash,loading:!0}),new O({document,onNavigate,store:i,localStorage});let e=document.getElementById("layout-icon1"),a=document.getElementById("layout-icon2");e.classList.remove("active-icon"),a.classList.add("active-icon")}else window.location.hash===I.Dashboard&&(t.innerHTML=B({pathname:window.location.hash,loading:!0}),new M({document,onNavigate,store:i,bills:[],localStorage}).getBillsAllUsers().then(e=>{t.innerHTML=E({data:{bills:e}}),new M({document,onNavigate,store:i,bills:e,localStorage})}).catch(e=>{t.innerHTML=B({pathname:window.location.hash,error:e})}))})()})()})();
+  `;case A.Dashboard:return I({data:a,error:i,loading:l});default:return d({data:a,error:i,loading:l})}},O="";class U{constructor({document:t,localStorage:e,onNavigate:i,PREVIOUS_LOCATION:l,store:s}){a(this,"handleSubmitEmployee",t=>{t.preventDefault();let e={type:"Employee",email:t.target.querySelector('input[data-testid="employee-email-input"]').value,password:t.target.querySelector('input[data-testid="employee-password-input"]').value,status:"connected"};this.localStorage.setItem("user",JSON.stringify(e)),this.login(e).catch(t=>this.createUser(e)).then(()=>{this.onNavigate(A.Bills),this.PREVIOUS_LOCATION=A.Bills,O=this.PREVIOUS_LOCATION,this.document.body.style.backgroundColor="#fff"})}),a(this,"handleSubmitAdmin",t=>{t.preventDefault();let e={type:"Admin",email:t.target.querySelector('input[data-testid="admin-email-input"]').value,password:t.target.querySelector('input[data-testid="admin-password-input"]').value,status:"connected"};this.localStorage.setItem("user",JSON.stringify(e)),this.login(e).catch(t=>this.createUser(e)).then(()=>{this.onNavigate(A.Dashboard),this.PREVIOUS_LOCATION=A.Dashboard,O=this.PREVIOUS_LOCATION,document.body.style.backgroundColor="#fff"})}),a(this,"login",t=>this.store?this.store.login(JSON.stringify({email:t.email,password:t.password})).then(t=>{let{jwt:e}=t;localStorage.setItem("jwt",e)}):null),a(this,"createUser",t=>this.store?this.store.users().create({data:JSON.stringify({type:t.type,name:t.email.split("@")[0],email:t.email,password:t.password})}).then(()=>(console.log(`User with ${t.email} is created`),this.login(t))):null),this.document=t,this.localStorage=e,this.onNavigate=i,this.PREVIOUS_LOCATION=l,this.store=s,this.document.querySelector('form[data-testid="form-employee"]').addEventListener("submit",this.handleSubmitEmployee),this.document.querySelector('form[data-testid="form-admin"]').addEventListener("submit",this.handleSubmitAdmin)}}class q{constructor({document:t,onNavigate:e,store:i,localStorage:l}){a(this,"handleClickNewBill",()=>{this.onNavigate(A.NewBill)}),a(this,"handleClickIconEye",t=>{let e=t.getAttribute("data-bill-url"),a=Math.floor(.5*$("#modaleFile").width());$("#modaleFile").find(".modal-body").html(`<div style='text-align: center;' class="bill-proof-container"><img width=${a} src=${e} alt="Bill" /></div>`),$("#modaleFile").modal("show")}),a(this,"getBills",()=>{if(this.store)return this.store.bills().list().then(t=>t.map(t=>{try{return{...t,date:b(t.date),status:f(t.status)}}catch(e){return console.log(e,"for",t),{...t,date:t.date,status:f(t.status)}}}))}),this.document=t,this.onNavigate=e,this.store=i;const s=t.querySelector('button[data-testid="btn-new-bill"]');s&&s.addEventListener("click",this.handleClickNewBill);const o=t.querySelectorAll('div[data-testid="icon-eye"]');o&&o.forEach(t=>{t.addEventListener("click",()=>this.handleClickIconEye(t))}),new L({document:t,localStorage:l,onNavigate:e})}}class Z{constructor({document:t,onNavigate:e,store:i,localStorage:l}){a(this,"handleChangeFile",t=>{t.preventDefault();let e=this.document.querySelector('input[data-testid="file"]'),a=e.files[0],i=a.name;if(!["image/png","image/jpg","image/jpeg","image/gif"].includes(a.type)){e.files=null,e.value=null,a=void 0,i=void 0,alert("Mauvais format de fichier! \n Seuls les fichiers .jpg, .jpeg, .png et .gif sont accept\xe9s");return}let l=new FormData;l.append("file",a),l.append("email",this.email),this.store.bills().create({data:l,headers:{noContentType:!0}}).then(t=>{let{filePath:e,id:a,key:l}=t;this.billId=a,this.key=l,this.path=e.replace("public\\","public/"),this.fileName=i}).catch(t=>console.error(t))}),a(this,"handleSubmit",t=>{t.preventDefault();let e=this.document.querySelector('form[data-testid="form-new-bill"]'),a=`${e.querySelector('select[data-testid="expense-type"]').value}`,i=`${e.querySelector('input[data-testid="expense-name"]').value}`,l=parseInt(e.querySelector('input[data-testid="amount"]').value)||0,s=e.querySelector('input[data-testid="datepicker"]').value.toString(),o=`${e.querySelector('input[data-testid="vat"]').value.toString()||"0"}`,n=parseInt(e.querySelector('input[data-testid="pct"]').value)||20,d=`${e.querySelector('textarea[data-testid="commentary"]').value}`,r={name:i,type:a,email:this.email,date:s,vat:o,pct:n,commentary:d,status:"pending",amount:l,fileName:this.fileName,fileUrl:this.path};this.updateBill(r)}),a(this,"updateBill",t=>{this.store&&this.store.bills().update({data:JSON.stringify(t),selector:this.key}).then(()=>{this.onNavigate(A.Bills)}).catch(t=>console.error(t))}),this.document=t,this.onNavigate=e,this.store=i,this.document.querySelector('form[data-testid="form-new-bill"]').addEventListener("submit",this.handleSubmit),this.document.querySelector('input[data-testid="file"]').addEventListener("change",this.handleChangeFile),this.path=null,this.user=JSON.parse(l.getItem("user")),this.email=this.user.email,new L({document:t,localStorage:l,onNavigate:e})}}!function a(i){var l=e[i];if(void 0!==l)return l.exports;var s=e[i]={exports:{}};return t[i](s,s.exports,a),s.exports}(884),(()=>{let t=()=>{let t=window.location.pathname,e="/Billed/";return t===e||t===e.slice(0,-1)?"/":t},e=document.getElementById("root");if(e.innerHTML=D({pathname:t()}),window.onNavigate=t=>{let a="/"===t?"/Billed/":t;if(window.history.pushState({},t,window.location.origin+a),t===A.Login)e.innerHTML=D({pathname:t}),document.body.style.backgroundColor="#0E5AE5",new U({document,localStorage,onNavigate,PREVIOUS_LOCATION:O,store:n});else if(t===A.Bills){e.innerHTML=D({pathname:t,loading:!0});let a=document.getElementById("layout-icon1"),i=document.getElementById("layout-icon2");a.classList.add("active-icon"),i.classList.remove("active-icon"),new q({document,onNavigate,store:n,localStorage}).getBills().then(t=>{e.innerHTML=w({data:t});let a=document.getElementById("layout-icon1"),i=document.getElementById("layout-icon2");a.classList.add("active-icon"),i.classList.remove("active-icon"),new q({document,onNavigate,store:n,localStorage})}).catch(a=>{e.innerHTML=D({pathname:t,error:a})})}else if(t===A.NewBill){e.innerHTML=D({pathname:t,loading:!0}),new Z({document,onNavigate,store:n,localStorage});let a=document.getElementById("layout-icon1"),i=document.getElementById("layout-icon2");a.classList.remove("active-icon"),i.classList.add("active-icon")}else t===A.Dashboard&&(e.innerHTML=D({pathname:t,loading:!0}),new T({document,onNavigate,store:n,bills:[],localStorage}).getBillsAllUsers().then(t=>{e.innerHTML=I({data:{bills:t}}),new T({document,onNavigate,store:n,bills:t,localStorage})}).catch(a=>{e.innerHTML=D({pathname:t,error:a})}))},window.onpopstate=a=>{a.preventDefault();let i=JSON.parse(localStorage.getItem("user"));"/"!==t()||i?i&&onNavigate(O):(document.body.style.backgroundColor="#0E5AE5",e.innerHTML=D({pathname:t()}))},"/"===t()&&""===window.location.hash)new U({document,localStorage,onNavigate,PREVIOUS_LOCATION:O,store:n}),document.body.style.backgroundColor="#0E5AE5";else if(""!==window.location.hash)if(window.location.hash===A.Bills){e.innerHTML=D({pathname:window.location.hash,loading:!0});let t=document.getElementById("layout-icon1"),a=document.getElementById("layout-icon2");t.classList.add("active-icon"),a.classList.remove("active-icon"),new q({document,onNavigate,store:n,localStorage}).getBills().then(t=>{e.innerHTML=w({data:t});let a=document.getElementById("layout-icon1"),i=document.getElementById("layout-icon2");a.classList.add("active-icon"),i.classList.remove("active-icon"),new q({document,onNavigate,store:n,localStorage})}).catch(t=>{e.innerHTML=D({pathname:window.location.hash,error:t})})}else if(window.location.hash===A.NewBill){e.innerHTML=D({pathname:window.location.hash,loading:!0}),new Z({document,onNavigate,store:n,localStorage});let t=document.getElementById("layout-icon1"),a=document.getElementById("layout-icon2");t.classList.remove("active-icon"),a.classList.add("active-icon")}else window.location.hash===A.Dashboard&&(e.innerHTML=D({pathname:window.location.hash,loading:!0}),new T({document,onNavigate,store:n,bills:[],localStorage}).getBillsAllUsers().then(t=>{e.innerHTML=I({data:{bills:t}}),new T({document,onNavigate,store:n,bills:t,localStorage})}).catch(t=>{e.innerHTML=D({pathname:window.location.hash,error:t})}))})()})()})();
